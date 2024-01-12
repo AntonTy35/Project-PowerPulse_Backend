@@ -73,7 +73,7 @@ const userSchema = new Schema(
     },
     BMR: {
       type: Number,
-      default: 2000,
+      default: 2200,
     },
     dailyRateSports: {
       type: Number,
