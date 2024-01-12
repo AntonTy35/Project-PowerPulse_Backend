@@ -44,7 +44,6 @@ const signup = async (req, res) => {
   await newUser.save();
 
   res.status(201).json({
-    token,
     user: {
       name: newUser.name,
       email: newUser.email,
@@ -57,6 +56,7 @@ const signup = async (req, res) => {
       levelActivity: newUser.levelActivity,
       avatarURL: newUser.avatarURL,
     },
+    token,
   });
 };
 
