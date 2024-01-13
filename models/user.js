@@ -123,49 +123,9 @@ const signinSchema = Joi.object({
   password: Joi.string().min(6).max(16).required(),
 });
 
-// const userUpdate = Joi.object({
-//   height: Joi.number().required(),
-//   weight: Joi.number().required(),
-//   age: Joi.number().required(),
-// });
-
-// const userUpdateFive = Joi.object({
-//   height: Joi.number().required(),
-//   weight: Joi.number().required(),
-//   age: Joi.number().required(),
-//   gender: Joi.string().valid("male", "female"),
-//   activity: Joi.number().valid(1, 2, 3, 4, 5),
-//   goal: Joi.string().valid(1, 2, 3),
-// });
-
-// const userUpdateFiveKeys = Joi.object()
-//   .keys({
-//     age: userUpdateFive.extract("age").optional(),
-//     height: userUpdateFive.extract("height").optional(),
-//     weight: userUpdateFive.extract("weight").optional(),
-//     gender: userUpdateFive.extract("gender").optional(),
-//     activity: userUpdateFive.extract("activity").optional(),
-//     goal: userUpdateFive.extract("goal").optional(),
-//   })
-//   .or("age", "height", "weight", "gender", "activity", "goal");
-
-// const userUpdateGoal = Joi.object({
-//   goal: Joi.string().valid("1", "2", "3"),
-// });
-
-// const userUpdateWeight = Joi.object({
-//   weight: Joi.number().required(),
-// });
-
 const userSchemas = {
   signupSchema,
   signinSchema,
-
-  // userUpdate,
-  // userUpdateFive,
-  // userUpdateFiveKeys,
-  // userUpdateGoal,
-  // userUpdateWeight,
 };
 
 const User = model("user", userSchema);
