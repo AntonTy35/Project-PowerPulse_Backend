@@ -1,12 +1,10 @@
 const signup = require("./signup");
 const signin = require("./signin");
+const logout = require("./logout");
 const { ctrlWrapper } = require("../../helpers");
 
 module.exports = {
   signup: ctrlWrapper(signup),
   signin: ctrlWrapper(signin),
-  // verify: ctrlWrapper(verify),
-  // resVerifyEmail: ctrlWrapper(resVerifyEmail),
-  // signout: ctrlWrapper(signout),
-  // forgotPassword: ctrlWrapper(forgotPassword),
+  logout: ctrlWrapper(logout),
 };
