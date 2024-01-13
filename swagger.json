@@ -5,8 +5,8 @@
     "description": "API documentation for Power Pulse Server",
     "version": "1.0.0",
     "license": {
-      "name": "PowerPulse by Sweet-Pies",
-      "url": "https://katanes.github.io/PowerPulse/"
+      "name": "PowerPulse by Project Group 09",
+      "url": "https://github.com/NikNas1405/PowerPulse"
     }
   },
   "consumes": ["application/json", "multipart/form-data"],
@@ -25,11 +25,272 @@
       "description": "Authorization endpoints"
     },
     {
-      "name": "User",
-      "description": "User endpoints"
+      "name": "Products",
+      "description": "Products endpoints"
+    },
+    {
+      "name": "Exercises",
+      "description": "Exercises endpoints"
+    },
+    {
+      "name": "Diary",
+      "description": "Diary endpoints"
+    },
+    {
+      "name": "Statistics",
+      "description": "Statistics endpoints"
     }
   ],
-  "paths": {    
+  "paths": {
+    "/api/auth/signup": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User registration",
+        "security": [],
+        "requestBody": {
+          "description": "Registration object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignupRequest"
+              },
+              "example": {}
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Successful registration",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignupResponse"
+              },
+              "example": {
+
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request (invalid request body)"
+        },
+        "409": {
+          "description": "Conflict (Email already in use)"
+        }
+      }
+    },
+    "/api/auth/signin": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User signin",
+        "parameters": [],
+
+        "requestBody": {
+          "description": "Signin's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SigninRequest"
+              },
+              "example": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful signin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SigninResponse"
+                },
+                "example": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "401": {
+            "description": "Unauthorized (invalid credentials)"
+          }
+        }
+      }
+    },
+    "/api/auth/signout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User logout",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "Bearer Token"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "204": {
+            "description": "Successful logout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Successful user's logout"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "You have logout successful"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/user/products": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get all products",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "Bearer Token"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Product object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductRequest"
+              },
+              "example": {
+                "foodType": "breakfast",
+                "foodName": "soup",
+                "carbohydrate": 25,
+                "protein": 20,
+                "fat": 30,
+                "calories": 300
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful creation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductResponse"
+                },
+                "example": {}
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+      
+    },
+    "/api/user/food-intake/{id}": {
+      "put": {
+        "tags": ["User"],
+        "summary": "Update food intake for a specific product",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "Bearer Token"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Food intake object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FoodRequest"
+              },
+              "example": {
+                "foodType": "breakfast",
+                "foodName": "burger",
+                "carbohydrate": 125,
+                "protein": 60,
+                "fat": 50,
+                "calories": 400
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoodUpdateResponse"
+                },
+                "example": {
+                  "_id": "658d1c0b5f78af03ef76c69e",
+                  "foodType": "breakfast",
+                  "foodName": "burger",
+                  "carbohydrate": 125,
+                  "protein": 60,
+                  "fat": 50,
+                  "calories": 400
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    }
+    
     
   },
 
@@ -42,7 +303,12 @@
       }
     },
     "schemas": {      
-      
+      "SignupRequest": {},
+      "SignupResponse": {},
+      "SigninRequest": {},
+      "SigninResponse": {},
+      "ProductRequest": {},
+      "ProductResponse": {}
     }
   }
 }

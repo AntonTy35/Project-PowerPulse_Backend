@@ -6,7 +6,7 @@ const {
 } = require("../../middlewares");
 const { userSchemas } = require("../../models/user");
 
-const ctrl = require("../../controllers/user");
+const ctrl = require("../../controllers/products");
 
 const jsonParser = express.json();
 const router = express.Router();
