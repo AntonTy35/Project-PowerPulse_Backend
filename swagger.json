@@ -25,6 +25,10 @@
       "description": "Authorization endpoints"
     },
     {
+      "name": "User",
+      "description": "User endpoints"
+    },
+    {
       "name": "Products",
       "description": "Products endpoints"
     },
@@ -224,71 +228,6 @@
         }
       }
       
-    },
-    "/api/user/food-intake/{id}": {
-      "put": {
-        "tags": ["User"],
-        "summary": "Update food intake for a specific product",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "required": true,
-            "type": "string",
-            "description": "Bearer Token"
-          }
-        ],
-        "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "description": "Food intake object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/FoodRequest"
-              },
-              "example": {
-                "foodType": "breakfast",
-                "foodName": "burger",
-                "carbohydrate": 125,
-                "protein": 60,
-                "fat": 50,
-                "calories": 400
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FoodUpdateResponse"
-                },
-                "example": {
-                  "_id": "658d1c0b5f78af03ef76c69e",
-                  "foodType": "breakfast",
-                  "foodName": "burger",
-                  "carbohydrate": 125,
-                  "protein": 60,
-                  "fat": 50,
-                  "calories": 400
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized (invalid token)"
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "500": {
-            "description": "Server error"
-          }
-        }
-      }
     }
     
     
