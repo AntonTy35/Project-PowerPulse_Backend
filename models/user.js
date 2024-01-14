@@ -109,13 +109,18 @@ const signupSchema = Joi.object({
   name: Joi.string().min(2).max(30).required(),
   email: Joi.string().pattern(emailRegex).required(),
   password: Joi.string().min(6).max(16).required(),
-  // height: Joi.number().min(150),
-  // currentWeight: Joi.number().min(35),
-  // desiredWeight: Joi.number().min(35),
-  // birthday: Joi.string(),
-  // blood: Joi.number().valid(1, 2, 3, 4),
-  // sex: Joi.string().valid("male", "female"),
-  // levelActivity: Joi.number().valid(1, 2, 3, 4, 5),
+});
+
+const currentSchema = Joi.object({
+  name: Joi.string().min(2).max(30).required(),
+  email: Joi.string().pattern(emailRegex).required(),
+  height: Joi.number().min(150).required(),
+  currentWeight: Joi.number().min(35).required(),
+  desiredWeight: Joi.number().min(35).required(),
+  birthday: Joi.string().required(),
+  blood: Joi.number().valid(1, 2, 3, 4).required(),
+  sex: Joi.string().valid("male", "female").required(),
+  levelActivity: Joi.number().valid(1, 2, 3, 4, 5).required(),
 });
 
 const signinSchema = Joi.object({
@@ -126,6 +131,7 @@ const signinSchema = Joi.object({
 const userSchemas = {
   signupSchema,
   signinSchema,
+  currentSchema,
 };
 
 const User = model("user", userSchema);
