@@ -24,15 +24,15 @@ const userSchema = new Schema(
     },
     height: {
       type: Number,
-      default: 150,
+      default: 0,
     },
     currentWeight: {
       type: Number,
-      default: 35,
+      default: 0,
     },
     desiredWeight: {
       type: Number,
-      default: 35,
+      default: 0,
     },
     // birthday: {
     //   type: Date,
@@ -73,11 +73,11 @@ const userSchema = new Schema(
     },
     BMR: {
       type: Number,
-      default: 2200,
+      default: 0,
     },
     dailyRateSports: {
       type: Number,
-      default: 110,
+      default: 0,
     },
     avatarURL: {
       type: String,
@@ -109,13 +109,13 @@ const signupSchema = Joi.object({
   name: Joi.string().min(2).max(30).required(),
   email: Joi.string().pattern(emailRegex).required(),
   password: Joi.string().min(6).max(16).required(),
-  height: Joi.number(),
-  currentWeight: Joi.number(),
-  desiredWeight: Joi.number(),
-  birthday: Joi.string(),
-  blood: Joi.number().valid(1, 2, 3, 4),
-  sex: Joi.string().valid("male", "female"),
-  levelActivity: Joi.number().valid(1, 2, 3, 4, 5),
+  // height: Joi.number().min(150),
+  // currentWeight: Joi.number().min(35),
+  // desiredWeight: Joi.number().min(35),
+  // birthday: Joi.string(),
+  // blood: Joi.number().valid(1, 2, 3, 4),
+  // sex: Joi.string().valid("male", "female"),
+  // levelActivity: Joi.number().valid(1, 2, 3, 4, 5),
 });
 
 const signinSchema = Joi.object({
