@@ -1,3 +1,3 @@
-const addDiaryExercisesDiaryContacts = (req, res) => {};
+const addDiaryContacts = (req, res) => {};
 
-module.exports = addDiaryExercisesDiaryContacts;
+module.exports = addDiaryContacts;
