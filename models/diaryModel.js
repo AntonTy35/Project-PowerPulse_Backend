@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+
 const Joi = require("joi");
 const { parse, isValid, format } = require("date-fns");
 
@@ -26,10 +27,11 @@ const diarySchema = new Schema(
         message: "Invalid date format. Please use the format DD/MM/YYYY.",
       },
     },
-    products: [
+    addProducts: [
       {
         productId: {
-          type: String,
+          type: Schema.Types.ObjectId,
+          ref: "product",
           required: true,
         },
         date: {
@@ -52,10 +54,11 @@ const diarySchema = new Schema(
         },
       },
     ],
-    exercises: [
+    addExercises: [
       {
         exerciseId: {
-          type: String,
+          type: Schema.Types.ObjectId,
+          ref: "exercise",
           required: true,
         },
         date: {
