@@ -1,6 +1,6 @@
 const { Diary } = require("../../models/diaryModel");
 
-const delDiaryContacts = async (req, res) => {
+const delDiaryProducts = async (req, res) => {
   const { productId, date } = req.body;
 
   const diaryEntry = await Diary.findOneAndUpdate(
@@ -27,4 +27,4 @@ const delDiaryContacts = async (req, res) => {
   res.status(200).json({ message: "Product deleted from diary successfully" });
 };
 
-module.exports = delDiaryContacts;
+module.exports = delDiaryProducts;

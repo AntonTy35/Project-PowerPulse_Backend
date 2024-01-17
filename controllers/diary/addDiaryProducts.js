@@ -1,6 +1,6 @@
 const { Diary } = require("../../models/diaryModel");
 
-const addDiaryContacts = async (req, res) => {
+const addDiaryProducts = async (req, res) => {
   const { productId, date, amount, calories } = req.body;
 
   const diaryEntry = await Diary.findOneAndUpdate(
@@ -46,4 +46,4 @@ const addDiaryContacts = async (req, res) => {
   });
 };
 
-module.exports = addDiaryContacts;
+module.exports = addDiaryProducts;
