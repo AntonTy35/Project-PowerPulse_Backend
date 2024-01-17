@@ -6,11 +6,11 @@ const { parse, isValid, format } = require("date-fns");
 const { handleMongooseError } = require("../helpers");
 
 const isValidDate = (value) => {
-  const parsedDate = parse(value, "dd/MM/yyyy", new Date());
-  return isValid(parsedDate) && format(parsedDate, "dd/MM/yyyy") === value;
+  const parsedDate = parse(value, "dd-MM-yyyy", new Date());
+  return isValid(parsedDate) && format(parsedDate, "dd-MM-yyyy") === value;
 };
 
-const dateRegex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+const dateRegex = /^(\d{2})-(\d{2})-(\d{4})$/;
 
 const diarySchema = new Schema(
   {

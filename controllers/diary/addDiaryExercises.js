@@ -2,10 +2,11 @@ const { Diary } = require("../../models/diaryModel");
 
 const addDiaryExercises = async (req, res) => {
   const { exerciseId, date, time, calories } = req.body;
+  const { id: owner } = req.user;
 
   const diaryEntry = await Diary.findOneAndUpdate(
     {
-      owner: req.user.id,
+      owner,
       "addExercises.exerciseId": exerciseId,
       "addExercises.date": date,
     },
@@ -20,7 +21,7 @@ const addDiaryExercises = async (req, res) => {
 
   if (!diaryEntry) {
     const newDiaryEntry = await Diary.findOneAndUpdate(
-      { owner: req.user.id, date },
+      { owner, date },
       {
         $push: {
           addExercises: {

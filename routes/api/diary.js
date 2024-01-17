@@ -11,7 +11,7 @@ router.post(
   "/diary/products",
   authenticate,
   validateBody(diarySchemas.productsSchema),
-  ctrl.addDiaryContacts
+  ctrl.addDiaryProducts
 );
 
 router.post(
@@ -21,10 +21,10 @@ router.post(
   ctrl.addDiaryExercises
 );
 
-router.delete("/diary/products", authenticate, ctrl.delDiaryContacts);
+router.delete("/diary/products", authenticate, ctrl.delDiaryProducts);
 
 router.delete("/diary/exercises", authenticate, ctrl.delDiaryExercises);
 
-router.get("/diary", authenticate, ctrl.getDiaryInfo);
+router.get("/diary/:date", authenticate, ctrl.getDiaryInfo);
 
 module.exports = router;

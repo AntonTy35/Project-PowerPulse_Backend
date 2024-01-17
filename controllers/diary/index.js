@@ -1,15 +1,15 @@
 const { ctrlWrapper } = require("../../helpers");
 
-const addDiaryContacts = require("./addDiaryContacts");
+const addDiaryProducts = require("./addDiaryProducts");
 const addDiaryExercises = require("./addDiaryExercises");
-const delDiaryContacts = require("./delDiaryContacts");
+const delDiaryProducts = require("./delDiaryProducts");
 const delDiaryExercises = require("./delDiaryExercises");
 const getDiaryInfo = require("./getDiaryInfo");
 
 module.exports = {
-  addDiaryContacts: ctrlWrapper(addDiaryContacts),
+  addDiaryProducts: ctrlWrapper(addDiaryProducts),
   addDiaryExercises: ctrlWrapper(addDiaryExercises),
-  delDiaryContacts: ctrlWrapper(delDiaryContacts),
+  delDiaryProducts: ctrlWrapper(delDiaryProducts),
   delDiaryExercises: ctrlWrapper(delDiaryExercises),
   getDiaryInfo: ctrlWrapper(getDiaryInfo),
 };
