@@ -13,9 +13,8 @@ const productsFromAllOnFilter = async (req, res, next) => {
   // searchWord(title) - beff , Cedar flour, Cedar flour, marlin &
   // searchFilter(filter) - all , recommended , notRecommended
 
-  //   const userBlood = req.user.blood;
-  const userBlood = 2;
-
+    const userBlood = req.user.blood;
+  
   switch (userBlood) {
     case 1:
       groupBlood = "groupBloodNotAllowed.1";

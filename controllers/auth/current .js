@@ -13,6 +13,7 @@ const getCurrent = async (req, res) => {
       sex: user.sex,
       levelActivity: user.levelActivity,
       avatarURL: user.avatarURL,
+      userParams: user.userParams,
     },
     token: user.token,
   });
