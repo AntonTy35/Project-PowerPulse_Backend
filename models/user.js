@@ -43,8 +43,9 @@ const userParamsSchema = new Schema(
       enum: [1, 2, 3, 4, 5],
     },
   },
-
   { versionKey: false, _id: false }
+  );
+
 
   // {
   //   versionKey: false,
