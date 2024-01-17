@@ -25,6 +25,6 @@ router.delete("/diary/products", authenticate, ctrl.delDiaryProducts);
 
 router.delete("/diary/exercises", authenticate, ctrl.delDiaryExercises);
 
-router.get("/diary", authenticate, ctrl.getDiaryInfo);
+router.get("/diary/:date", authenticate, ctrl.getDiaryInfo);
 
 module.exports = router;

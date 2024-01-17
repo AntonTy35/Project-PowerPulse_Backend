@@ -1,10 +1,11 @@
 const { Diary } = require("../../models/diaryModel");
 
 const getDairyInfo = async (req, res) => {
-  const dataInDiary = await Diary.find(
-    {
-      owner: req.user.id,
-    },
+  const { id: owner } = req.user;
+  const { date } = req.params;
+
+  const dataInDiary = await Diary.findOne(
+    { owner, date },
     "-createdAt -updatedAt"
   )
     .populate({
@@ -15,6 +16,12 @@ const getDairyInfo = async (req, res) => {
       path: "addExercises.exerciseId",
       model: "exercise",
     });
+
+  if (!dataInDiary) {
+    return res
+      .status(404)
+      .json({ message: "No data found for the given date" });
+  }
 
   res.status(200).json(dataInDiary);
 };

@@ -2,10 +2,11 @@ const { Diary } = require("../../models/diaryModel");
 
 const delDiaryExercises = async (req, res) => {
   const { exerciseId, date } = req.body;
+  const { id: owner } = req.user;
 
   const diaryEntry = await Diary.findOneAndUpdate(
     {
-      owner: req.user.id,
+      owner,
       "addExercises.exerciseId": exerciseId,
       "addExercises.date": date,
     },
