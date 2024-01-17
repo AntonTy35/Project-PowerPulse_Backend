@@ -20,16 +20,25 @@ const userParamsSchema = new Schema(
       type: Number,
       default: 0,
     },
+    // birthday: {
+    //   type: Date,
+    //   validate: {
+    //     validator: function (birthday) {
+    //       return (
+    //         isBefore(birthday, new Date()) &&
+    //         differenceInYears(new Date(), birthday) >= 18
+    //       );
+    //     },
+    //     message: "The user must be over 18 years old.",
+    //   },
+    // },
     birthday: {
       type: Date,
       validate: {
         validator: function (birthday) {
-          return (
-            isBefore(birthday, new Date()) &&
-            differenceInYears(new Date(), birthday) >= 18
-          );
+          return getAge(birthday) >= 18;
         },
-        message: "The user must be over 18 years old.",
+        message: "User must be 18 years or older. ",
       },
     },
 
@@ -46,11 +55,12 @@ const userParamsSchema = new Schema(
       enum: [1, 2, 3, 4, 5],
     },
   },
+  { versionKey: false, _id: false }
 
-  {
-    versionKey: false,
-    timestamps: true,
-  }
+  // {
+  //   versionKey: false,
+  //   timestamps: true,
+  // }
 );
 
 const userSchema = new Schema(
