@@ -6,6 +6,53 @@ const { handleMongooseError } = require("../helpers");
 
 const emailRegex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 
+const userParamsSchema = new Schema(
+  {
+    height: {
+      type: Number,
+      default: 0,
+    },
+    currentWeight: {
+      type: Number,
+      default: 0,
+    },
+    desiredWeight: {
+      type: Number,
+      default: 0,
+    },
+    birthday: {
+      type: Date,
+      validate: {
+        validator: function (birthday) {
+          return (
+            isBefore(birthday, new Date()) &&
+            differenceInYears(new Date(), birthday) >= 18
+          );
+        },
+        message: "The user must be over 18 years old.",
+      },
+    },
+
+    blood: {
+      type: Number,
+      enum: [1, 2, 3, 4],
+    },
+    sex: {
+      type: String,
+      enum: ["male", "female"],
+    },
+    levelActivity: {
+      type: Number,
+      enum: [1, 2, 3, 4, 5],
+    },
+  },
+
+  {
+    versionKey: false,
+    timestamps: true,
+  }
+);
+
 const userSchema = new Schema(
   {
     name: {
@@ -55,7 +102,7 @@ const userSchema = new Schema(
     blood: {
       type: Number,
       enum: [1, 2, 3, 4],
-      default: "1",
+      default: 1,
     },
     sex: {
       type: String,
@@ -71,7 +118,7 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
-    BMR: {
+    bmr: {
       type: Number,
       default: 0,
     },
@@ -96,6 +143,8 @@ const userSchema = new Schema(
       type: Number,
       default: 0,
     },
+
+    userParams: { type: userParamsSchema, default: {} },
   },
   {
     versionKey: false,
@@ -110,8 +159,12 @@ const signupSchema = Joi.object({
   email: Joi.string().pattern(emailRegex).required(),
   password: Joi.string().min(6).max(16).required(),
 });
+const signinSchema = Joi.object({
+  email: Joi.string().pattern(emailRegex).required(),
+  password: Joi.string().min(6).max(16).required(),
+});
 
-const currentSchema = Joi.object({
+const updateUserParamsSchema = Joi.object({
   name: Joi.string().min(2).max(30).required(),
   email: Joi.string().pattern(emailRegex).required(),
   height: Joi.number().min(150).required(),
@@ -123,17 +176,12 @@ const currentSchema = Joi.object({
   levelActivity: Joi.number().valid(1, 2, 3, 4, 5).required(),
 });
 
-const signinSchema = Joi.object({
-  email: Joi.string().pattern(emailRegex).required(),
-  password: Joi.string().min(6).max(16).required(),
-});
-
-const userSchemas = {
+const schemas = {
   signupSchema,
   signinSchema,
-  currentSchema,
+  updateUserParamsSchema,
 };
 
 const User = model("user", userSchema);
 
-module.exports = { User, userSchemas };
+module.exports = { User, schemas };
