@@ -1,5 +1,7 @@
 const { Diary } = require("../../models/diaryModel");
 
+const { HttpError } = require("../../helpers");
+
 const getDairyInfo = async (req, res) => {
   const { id: owner } = req.user;
   const { date } = req.params;
@@ -17,11 +19,12 @@ const getDairyInfo = async (req, res) => {
       model: "exercise",
     });
 
-  if (!dataInDiary) {
-    return res
-      .status(404)
-      .json({ message: "No data found for the given date" });
-  }
+  if (
+    !dataInDiary ||
+    (dataInDiary.addProducts.length === 0 &&
+      dataInDiary.addExercises.length === 0)
+  )
+    throw HttpError(404, "No data found for the given date");
 
   res.status(200).json(dataInDiary);
 };
