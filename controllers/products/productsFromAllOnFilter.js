@@ -10,11 +10,11 @@ const productsFromAllOnFilter = async (req, res, next) => {
     "Filter- ",
     req.query
   ); //  searchCategory(category) - meat, sausage , fish , berries &
-  // searchWord(title) - beff , Cedar flour, Cedar flour, marlin &
+  // searchWord(title) - beef , Cedar flour, Cedar flour, marlin &
   // searchFilter(filter) - all , recommended , notRecommended
 
-    const userBlood = req.user.blood;
-  
+  const userBlood = req.user.blood;
+
   switch (userBlood) {
     case 1:
       groupBlood = "groupBloodNotAllowed.1";
@@ -33,47 +33,57 @@ const productsFromAllOnFilter = async (req, res, next) => {
   }
 
   const searchCategory = req.query.category;
-  const searchWord = req.query.title;
+  let searchWord = req.query.title;
   const searchFilter = req.query.filter;
 
-  console.log(
-    "1.2 - це contact Controller - exercisesFilter",
-    { searchCategory },
-    { searchWord },
-    { searchFilter }
-  );
+  const queryAllFromAll = {};
 
-  const queryAll = {
-    category: searchCategory,
-    title: { $regex: searchWord, $options: "i" },
-  };
+  if (searchWord === undefined) {
+    searchWord = "";
+  };  
 
-  const queryRecommended = {
-    [groupBlood]: true,
-    category: searchCategory,
-    title: { $regex: searchWord, $options: "i" },
-  };
+  if (searchCategory === undefined) {
+    query = queryAllFromAll;
+  } else {
+    console.log(
+      "1.2 - це contact Controller - exercisesFilter",
+      { searchCategory },
+      { searchWord },
+      { searchFilter }
+    );   
 
-  const queryNotRecommended = {
-    [groupBlood]: { $ne: true },
-    category: searchCategory,
-    title: { $regex: searchWord, $options: "i" },
-  };
+    const queryAll = {
+      category: searchCategory,
+      title: { $regex: searchWord, $options: "i" },
+    };
 
-  switch (searchFilter) {
-    case "all":
-      query = queryAll;
-      break;
-    case "recommended":
-      query = queryRecommended;
-      break;
-    case "notRecommended":
-      query = queryNotRecommended;
-      break;
+    const queryRecommended = {
+      [groupBlood]: true,
+      category: searchCategory,
+      title: { $regex: searchWord, $options: "i" },
+    };
 
-    default:
-      query = queryAll;
-  }
+    const queryNotRecommended = {
+      [groupBlood]: { $ne: true },
+      category: searchCategory,
+      title: { $regex: searchWord, $options: "i" },
+    };
+
+    switch (searchFilter) {
+      case "all":
+        query = queryAll;
+        break;
+      case "recommended":
+        query = queryRecommended;
+        break;
+      case "notRecommended":
+        query = queryNotRecommended;
+        break;
+
+      default:
+        query = queryAllFromAll;
+    }
+  }  
 
   console.log("1.3 - це contact Controller - exercisesFilter", { query });
 
