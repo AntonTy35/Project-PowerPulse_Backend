@@ -237,7 +237,59 @@
         }
       }
     },
-    "/api/auth/update":{},
+    "/api/auth/params": {
+      "patch": {
+        "tags": ["Auth"],
+        "summary": "Update user information",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "Bearer Token"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Updated user information",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ParamsRequest"
+              },
+              "example": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User information updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParamsResponse"
+                },
+                "example": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body or ID)"
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
     "/api/user/products/categories": {
       "get": {
         "tags": ["Products"],
@@ -354,6 +406,234 @@
         }
       }
       
+    },
+    "/api/user/exercises/{filter}/:filter": {
+      "get": {
+        "tags": ["Exercises"],
+        "summary": "Get categories exercises",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "Bearer Token"
+          }
+        ],
+        "security": [{ "Bearer": [] }],        
+        "responses": {
+          "201": {
+            "description": "Successful creation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExercisesResponse"
+                },
+                "example": {}
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+      
+    },
+    "/api/user/diary/{date}": {
+      "get": {
+        "tags": ["Diary"],
+        "summary": "Get diary by date",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "Bearer Token"
+          }
+        ],
+        "security": [{ "Bearer": [] }],        
+        "responses": {
+          "201": {
+            "description": "Successful creation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiaryResponse"
+                },
+                "example": {}
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+      
+    },
+    "/api/user/diary/products": {
+      "post": {
+        "tags": ["Diary"],
+        "summary": "User diary product",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "Bearer Token"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Diary object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DiaryProductRequest"
+              },
+              "example": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Diary"],
+        "summary": "Delete user diary product",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "Bearer Token"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Diary object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DiaryProductRequest"
+              },
+              "example": {}
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DiaryProductResponse"
+              },
+              "example": {
+
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request (invalid request body)"
+        },
+        "409": {
+          "description": "Conflict (Email already in use)"
+        }
+      }
+    },
+    "/api/user/diary/exercises": {
+      "post": {
+        "tags": ["Diary"],
+        "summary": "User diary exercises",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "Bearer Token"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Diary object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DiaryExercisesRequest"
+              },
+              "example": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Diary"],
+        "summary": "Delete user diary exercises",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "Bearer Token"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Diary object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DiaryExercisesRequest"
+              },
+              "example": {}
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DiaryExercisesResponse"
+              },
+              "example": {
+
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request (invalid request body)"
+        },
+        "409": {
+          "description": "Conflict (Email already in use)"
+        }
+      }
     }
     
     
@@ -468,12 +748,17 @@
           }
         }
       },
-      "UpdateRequest": {},
-      "UpdateResponse": {},
+      "ParamsRequest": {},
+      "ParamsResponse": {},
       "ProductResponse": {},
       "CategoriesResponse": {},
       "ProductsResponse": {},
-      "ExercisesResponse": {}
+      "ExercisesResponse": {},
+      "DiaryResponse":{},
+      "DiaryProductRequest":{},
+      "DiaryProductResponse":{},
+      "DiaryExercisesRequest":{},
+      "DiaryExercisesResponse":{}
     }
   }
 }
