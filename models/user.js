@@ -6,53 +6,6 @@ const { handleMongooseError } = require("../helpers");
 
 const emailRegex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 
-const userParamsSchema = new Schema(
-  {
-    height: {
-      type: Number,
-      default: 0,
-    },
-    currentWeight: {
-      type: Number,
-      default: 0,
-    },
-    desiredWeight: {
-      type: Number,
-      default: 0,
-    },
-  birthday: {
-      type: Date,
-      validate: {
-        validator: function (birthday) {
-          return getAge(birthday) >= 18;
-        },
-        message: "User must be 18 years or older. ",
-      },
-    },
-
-    blood: {
-      type: Number,
-      enum: [1, 2, 3, 4],
-    },
-    sex: {
-      type: String,
-      enum: ["male", "female"],
-    },
-    levelActivity: {
-      type: Number,
-      enum: [1, 2, 3, 4, 5],
-    },
-  },
-  { versionKey: false, _id: false }
-  );
-
-
-  // {
-  //   versionKey: false,
-  //   timestamps: true,
-  // }
-
-
 const userSchema = new Schema(
   {
     name: {
@@ -81,11 +34,6 @@ const userSchema = new Schema(
       type: Number,
       default: 0,
     },
-    // birthday: {
-    //   type: Date,
-    //   required: [true, "must be older than 18 years"],
-    //   default: "01.01.1989",
-    // },
     birthday: {
       type: Date,
       validate: {
@@ -98,7 +46,6 @@ const userSchema = new Schema(
         message: "The user must be over 18 years old.",
       },
     },
-
     blood: {
       type: Number,
       enum: [1, 2, 3, 4],
@@ -143,8 +90,6 @@ const userSchema = new Schema(
       type: Number,
       default: 0,
     },
-
-    userParams: { type: userParamsSchema, default: {} },
   },
   {
     versionKey: false,
@@ -159,6 +104,7 @@ const signupSchema = Joi.object({
   email: Joi.string().pattern(emailRegex).required(),
   password: Joi.string().min(6).max(16).required(),
 });
+
 const signinSchema = Joi.object({
   email: Joi.string().pattern(emailRegex).required(),
   password: Joi.string().min(6).max(16).required(),
