@@ -23,11 +23,7 @@
     {
       "name": "Auth",
       "description": "Authorization endpoints"
-    },
-    {
-      "name": "User",
-      "description": "User endpoints"
-    },
+    },    
     {
       "name": "Products",
       "description": "Products endpoints"
@@ -86,6 +82,38 @@
         }
       }
     },
+    "api/auth/verify/{verificationToken}": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Verify email with token",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "verificationToken",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email verification successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifyResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid token)"
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          }
+        }
+      }
+    },
     "/api/auth/signin": {
       "post": {
         "tags": ["Auth"],
@@ -125,7 +153,7 @@
         }
       }
     },
-    "/api/auth/signout": {
+    "/api/auth/logout": {
       "post": {
         "tags": ["Auth"],
         "summary": "User logout",
@@ -171,7 +199,137 @@
         }
       }
     },
-    "/api/user/products": {
+    "/api/auth/current": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Get current user",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "Bearer Token"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentResponse"
+                },
+                "example": {}
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/auth/params": {
+      "patch": {
+        "tags": ["Auth"],
+        "summary": "Update user information",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "Bearer Token"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Updated user information",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ParamsRequest"
+              },
+              "example": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User information updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParamsResponse"
+                },
+                "example": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body or ID)"
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/user/products/categories": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get all categories products",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "Bearer Token"
+          }
+        ],
+        "security": [{ "Bearer": [] }],        
+        "responses": {
+          "201": {
+            "description": "Successful creation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoriesResponse"
+                },
+                "example": {}
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+      
+    },    
+    "/api/user/products/{allOnFilter}": {
       "get": {
         "tags": ["Products"],
         "summary": "Get all products",
@@ -184,26 +342,7 @@
             "description": "Bearer Token"
           }
         ],
-        "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "description": "Product object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ProductRequest"
-              },
-              "example": {
-                "foodType": "breakfast",
-                "foodName": "soup",
-                "carbohydrate": 25,
-                "protein": 20,
-                "fat": 30,
-                "calories": 300
-              }
-            }
-          }
-        },
+        "security": [{ "Bearer": [] }],        
         "responses": {
           "201": {
             "description": "Successful creation",
@@ -228,6 +367,273 @@
         }
       }
       
+    },
+    "/api/user/exercises/{filter}": {
+      "get": {
+        "tags": ["Exercises"],
+        "summary": "Get exercises",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "Bearer Token"
+          }
+        ],
+        "security": [{ "Bearer": [] }],        
+        "responses": {
+          "201": {
+            "description": "Successful creation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExercisesResponse"
+                },
+                "example": {}
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+      
+    },
+    "/api/user/exercises/{filter}/:filter": {
+      "get": {
+        "tags": ["Exercises"],
+        "summary": "Get categories exercises",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "Bearer Token"
+          }
+        ],
+        "security": [{ "Bearer": [] }],        
+        "responses": {
+          "201": {
+            "description": "Successful creation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExercisesResponse"
+                },
+                "example": {}
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+      
+    },
+    "/api/user/diary/{date}": {
+      "get": {
+        "tags": ["Diary"],
+        "summary": "Get diary by date",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "Bearer Token"
+          }
+        ],
+        "security": [{ "Bearer": [] }],        
+        "responses": {
+          "201": {
+            "description": "Successful creation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiaryResponse"
+                },
+                "example": {}
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+      
+    },
+    "/api/user/diary/products": {
+      "post": {
+        "tags": ["Diary"],
+        "summary": "User diary product",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "Bearer Token"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Diary object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DiaryProductRequest"
+              },
+              "example": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Diary"],
+        "summary": "Delete user diary product",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "Bearer Token"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Diary object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DiaryProductRequest"
+              },
+              "example": {}
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DiaryProductResponse"
+              },
+              "example": {
+
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request (invalid request body)"
+        },
+        "409": {
+          "description": "Conflict (Email already in use)"
+        }
+      }
+    },
+    "/api/user/diary/exercises": {
+      "post": {
+        "tags": ["Diary"],
+        "summary": "User diary exercises",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "Bearer Token"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Diary object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DiaryExercisesRequest"
+              },
+              "example": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Diary"],
+        "summary": "Delete user diary exercises",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "Bearer Token"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Diary object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DiaryExercisesRequest"
+              },
+              "example": {}
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DiaryExercisesResponse"
+              },
+              "example": {
+
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request (invalid request body)"
+        },
+        "409": {
+          "description": "Conflict (Email already in use)"
+        }
+      }
     }
     
     
@@ -243,11 +649,116 @@
     },
     "schemas": {      
       "SignupRequest": {},
+      "VerifyResponse": {
+        "type": "object",
+        "title": "VerifyResponse",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Message about successful confirmation of email"
+          }
+        }
+      },
       "SignupResponse": {},
       "SigninRequest": {},
       "SigninResponse": {},
-      "ProductRequest": {},
-      "ProductResponse": {}
+      "CurrentResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "User's id"
+          },
+          "name": {
+            "type": "string",
+            "description": "User's name"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password"
+          },          
+          "height": {
+            "type": "number",
+            "description": "User's height"
+          },
+          "currentWeight": {
+            "type": "number",
+            "description": "User's current weight"
+          },
+          "desiredWeight": {
+            "type": "number",
+            "description": "User's desired weight"
+          },
+          "token": {
+            "type": "string",
+            "description": "User's token"
+          },
+          "activity": {
+            "type": "number",
+            "enum": ["1", "2", "3", "4", "5"],
+            "description": "User's activity level"
+          },
+          "BMR": {
+            "type": "number",
+            "description": "User's BMR"
+          },
+          "rateWater": {
+            "type": "number",
+            "description": "User's rate water"
+          },
+          "protein": {
+            "type": "number",
+            "description": "User's protein"
+          },
+          "fat": {
+            "type": "number",
+            "description": "User's fat"
+          },
+          "carbs": {
+            "type": "number",
+            "description": "User's carbs"
+          },
+          "avatarUrl": {
+            "type": "string",
+            "description": "URL to user's avatar"
+          },
+          "verify": {
+            "type": "boolean",
+            "description": "User's verify email"
+          },
+          "verificationToken": {
+            "type": "string",
+            "description": "User's verificationToken"
+          },
+          "confirmationOfVerification": {
+            "type": "number",
+            "description": "User's confirmationOfVerification"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "User's create date"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "User's update date"
+          }
+        }
+      },
+      "ParamsRequest": {},
+      "ParamsResponse": {},
+      "ProductResponse": {},
+      "CategoriesResponse": {},
+      "ProductsResponse": {},
+      "ExercisesResponse": {},
+      "DiaryResponse":{},
+      "DiaryProductRequest":{},
+      "DiaryProductResponse":{},
+      "DiaryExercisesRequest":{},
+      "DiaryExercisesResponse":{}
     }
   }
 }
