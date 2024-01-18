@@ -21,9 +21,9 @@ router.post(
   ctrl.addDiaryExercises
 );
 
-router.delete("/diary/products", authenticate, ctrl.delDiaryProducts);
+router.delete("/diary/products/:id", authenticate, ctrl.delDiaryProducts);
 
-router.delete("/diary/exercises", authenticate, ctrl.delDiaryExercises);
+router.delete("/diary/exercises/:id", authenticate, ctrl.delDiaryExercises);
 
 router.get("/diary/:date", authenticate, ctrl.getDiaryInfo);
 

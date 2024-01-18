@@ -19,14 +19,38 @@ const getDairyInfo = async (req, res) => {
       model: "exercise",
     });
 
-  if (
-    !dataInDiary ||
-    (dataInDiary.addProducts.length === 0 &&
-      dataInDiary.addExercises.length === 0)
-  )
-    throw HttpError(404, "No data found for the given date");
+  if (!dataInDiary) throw HttpError(404, "No data found for the given date");
 
-  res.status(200).json(dataInDiary);
+  const { addProducts, addExercises } = dataInDiary;
+
+  const consumedCalories = addProducts.reduce(
+    (acc, value) => acc + value.calories,
+    0
+  );
+
+  const burnedCalories = addExercises.reduce(
+    (acc, value) => acc + value.calories,
+    0
+  );
+
+  const remainingCalories = 2200 - burnedCalories;
+
+  const timeForSports = addExercises.reduce(
+    (acc, value) => acc + value.time,
+    0
+  );
+
+  const remainingSports = 110 - timeForSports;
+
+  res.status(200).json({
+    consumedCalories,
+    burnedCalories,
+    remainingCalories,
+    timeForSports,
+    remainingSports,
+    addProducts,
+    addExercises,
+  });
 };
 
 module.exports = getDairyInfo;

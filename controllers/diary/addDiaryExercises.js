@@ -16,6 +16,12 @@ const addDiaryExercises = async (req, res) => {
         "addExercises.$.calories": calories,
       },
     },
+    // {
+    //   $inc: {
+    //     "addExercises.$.time": +time,
+    //     "addExercises.$.calories": +calories,
+    //   },
+    // },
     { new: true }
   ).populate("addExercises.exerciseId");
 
