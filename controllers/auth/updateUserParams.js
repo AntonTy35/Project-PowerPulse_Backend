@@ -4,7 +4,6 @@ const calculateBMR = require("../../utils/calculateBMR");
 const updateUserParams = async (req, res) => {
   try {
     const { email } = req.user;
-
     const updatedUser = await User.findOneAndUpdate({ email }, req.body, {
       new: true,
     });
@@ -21,6 +20,9 @@ const updateUserParams = async (req, res) => {
       sex,
       levelActivity
     );
+    updatedUser.bmr = bmr;
+
+    await updatedUser.save();
 
     res.status(200).json({
       user: {
