@@ -290,7 +290,7 @@
         }
       }
     },
-    "/api/user/products/categories": {
+    "/api/products/categories": {
       "get": {
         "tags": ["Products"],
         "summary": "Get all categories products",
@@ -329,7 +329,7 @@
       }
       
     },    
-    "/api/user/products/{allOnFilter}": {
+    "/api/products/{allOnFilter}": {
       "get": {
         "tags": ["Products"],
         "summary": "Get all products",
@@ -368,7 +368,7 @@
       }
       
     },
-    "/api/user/exercises/{filter}": {
+    "/api/exercises/{filter}": {
       "get": {
         "tags": ["Exercises"],
         "summary": "Get exercises",
@@ -407,7 +407,7 @@
       }
       
     },
-    "/api/user/exercises/{filter}/:filter": {
+    "/api/exercises/{filter}/:bodyPart": {
       "get": {
         "tags": ["Exercises"],
         "summary": "Get categories exercises",
@@ -446,7 +446,7 @@
       }
       
     },
-    "/api/user/diary/{date}": {
+    "/api/diary/{date}": {
       "get": {
         "tags": ["Diary"],
         "summary": "Get diary by date",
@@ -485,7 +485,7 @@
       }
       
     },
-    "/api/user/diary/products": {
+    "/api/diary/products": {
       "post": {
         "tags": ["Diary"],
         "summary": "User diary product",
@@ -512,6 +512,29 @@
           }
         }
       },
+      "responses": {
+        "201": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DiaryProductResponse"
+              },
+              "example": {
+
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request (invalid request body)"
+        },
+        "409": {
+          "description": "Conflict (Email already in use)"
+        }
+      }
+    },
+    "/api/diary/products/{id}": {
       "delete": {
         "tags": ["Diary"],
         "summary": "Delete user diary product",
@@ -560,7 +583,7 @@
         }
       }
     },
-    "/api/user/diary/exercises": {
+    "/api/diary/exercises": {
       "post": {
         "tags": ["Diary"],
         "summary": "User diary exercises",
@@ -587,6 +610,29 @@
           }
         }
       },
+      "responses": {
+        "201": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DiaryExercisesResponse"
+              },
+              "example": {
+
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request (invalid request body)"
+        },
+        "409": {
+          "description": "Conflict (Email already in use)"
+        }
+      }
+    },
+    "/api/diary/exercises/{id}": {
       "delete": {
         "tags": ["Diary"],
         "summary": "Delete user diary exercises",

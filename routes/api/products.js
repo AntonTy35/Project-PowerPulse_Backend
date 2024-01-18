@@ -11,16 +11,16 @@ const ctrl = require("../../controllers/products");
 const jsonParser = express.json();
 const router = express.Router();
 
-router.get("/products/categories", authenticate, ctrl.productsCategories);
-router.get("/products", authenticate, ctrl.productsAll);
+router.get("/categories", authenticate, ctrl.productsCategories);
+router.get("/", authenticate, ctrl.productsAll);
 router.get(
-  "/products/:allOnFilter",
+  "/:allOnFilter",
   authenticate,
   ctrl.productsFromAllOnFilter
 );
-router.get("/products/:blood/recommended", authenticate, ctrl.productsRecommended);
+router.get("/:blood/recommended", authenticate, ctrl.productsRecommended);
 router.get(
-  "/products/:blood/not-recommended",
+  "/:blood/not-recommended",
   authenticate,
   ctrl.productsNotRecommended
 );

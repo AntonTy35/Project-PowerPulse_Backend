@@ -8,23 +8,23 @@ const { diarySchemas } = require("../../models/diaryModel");
 const router = express.Router();
 
 router.post(
-  "/diary/products",
+  "/products",
   authenticate,
   validateBody(diarySchemas.productsSchema),
   ctrl.addDiaryProducts
 );
 
 router.post(
-  "/diary/exercises",
+  "/exercises",
   authenticate,
   validateBody(diarySchemas.exercisesSchema),
   ctrl.addDiaryExercises
 );
 
-router.delete("/diary/products/:id", authenticate, ctrl.delDiaryProducts);
+router.delete("/products/:id", authenticate, ctrl.delDiaryProducts);
 
-router.delete("/diary/exercises/:id", authenticate, ctrl.delDiaryExercises);
+router.delete("/exercises/:id", authenticate, ctrl.delDiaryExercises);
 
-router.get("/diary/:date", authenticate, ctrl.getDiaryInfo);
+router.get("/:date", authenticate, ctrl.getDiaryInfo);
 
 module.exports = router;

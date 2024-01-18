@@ -21,9 +21,9 @@ app.use(express.json());
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/api/auth", authRouter);
-app.use("/api/user", productsRouter);
-app.use("/api/user", exercisesRouter);
-app.use("/api/user", diaryRouter);
+app.use("/api/products", productsRouter);
+app.use("/api/exercises", exercisesRouter);
+app.use("/api/diary", diaryRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
