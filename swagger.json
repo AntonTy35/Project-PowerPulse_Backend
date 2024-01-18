@@ -119,7 +119,6 @@
         "tags": ["Auth"],
         "summary": "User signin",
         "parameters": [],
-
         "requestBody": {
           "description": "Signin's object",
           "required": true,
@@ -157,15 +156,7 @@
       "post": {
         "tags": ["Auth"],
         "summary": "User logout",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "required": true,
-            "type": "string",
-            "description": "Bearer Token"
-          }
-        ],
+        "parameters": [],
         "security": [{ "Bearer": [] }],
         "responses": {
           "204": {
@@ -203,15 +194,7 @@
       "get": {
         "tags": ["Auth"],
         "summary": "Get current user",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "required": true,
-            "type": "string",
-            "description": "Bearer Token"
-          }
-        ],
+        "parameters": [],
         "security": [{ "Bearer": [] }],
         "responses": {
           "200": {
@@ -241,15 +224,7 @@
       "patch": {
         "tags": ["Auth"],
         "summary": "Update user information",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "required": true,
-            "type": "string",
-            "description": "Bearer Token"
-          }
-        ],
+        "parameters": [],
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "Updated user information",
@@ -294,15 +269,7 @@
       "get": {
         "tags": ["Products"],
         "summary": "Get all categories products",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "required": true,
-            "type": "string",
-            "description": "Bearer Token"
-          }
-        ],
+        "parameters": [],
         "security": [{ "Bearer": [] }],        
         "responses": {
           "201": {
@@ -333,15 +300,7 @@
       "get": {
         "tags": ["Products"],
         "summary": "Get all products",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "required": true,
-            "type": "string",
-            "description": "Bearer Token"
-          }
-        ],
+        "parameters": [],
         "security": [{ "Bearer": [] }],        
         "responses": {
           "201": {
@@ -372,15 +331,7 @@
       "get": {
         "tags": ["Exercises"],
         "summary": "Get exercises",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "required": true,
-            "type": "string",
-            "description": "Bearer Token"
-          }
-        ],
+        "parameters": [],
         "security": [{ "Bearer": [] }],        
         "responses": {
           "201": {
@@ -411,15 +362,7 @@
       "get": {
         "tags": ["Exercises"],
         "summary": "Get categories exercises",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "required": true,
-            "type": "string",
-            "description": "Bearer Token"
-          }
-        ],
+        "parameters": [],
         "security": [{ "Bearer": [] }],        
         "responses": {
           "201": {
@@ -450,15 +393,7 @@
       "get": {
         "tags": ["Diary"],
         "summary": "Get diary by date",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "required": true,
-            "type": "string",
-            "description": "Bearer Token"
-          }
-        ],
+        "parameters": [],
         "security": [{ "Bearer": [] }],        
         "responses": {
           "201": {
@@ -489,15 +424,7 @@
       "post": {
         "tags": ["Diary"],
         "summary": "User diary product",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "required": true,
-            "type": "string",
-            "description": "Bearer Token"
-          }
-        ],
+        "parameters": [],
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "Diary object",
@@ -538,15 +465,7 @@
       "delete": {
         "tags": ["Diary"],
         "summary": "Delete user diary product",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "required": true,
-            "type": "string",
-            "description": "Bearer Token"
-          }
-        ],
+        "parameters": [],
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "Diary object",
@@ -587,15 +506,7 @@
       "post": {
         "tags": ["Diary"],
         "summary": "User diary exercises",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "required": true,
-            "type": "string",
-            "description": "Bearer Token"
-          }
-        ],
+        "parameters": [],
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "Diary object",
@@ -636,15 +547,7 @@
       "delete": {
         "tags": ["Diary"],
         "summary": "Delete user diary exercises",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "required": true,
-            "type": "string",
-            "description": "Bearer Token"
-          }
-        ],
+        "parameters": [],
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "Diary object",
