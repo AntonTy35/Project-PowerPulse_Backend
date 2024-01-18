@@ -3,21 +3,17 @@ const { Diary } = require("../../models/diaryModel");
 const { HttpError } = require("../../helpers");
 
 const delDiaryExercises = async (req, res) => {
-  const { exerciseId, date } = req.body;
   const { id: owner } = req.user;
+  const { id } = req.params;
 
   const diaryEntry = await Diary.findOneAndUpdate(
     {
       owner,
-      "addExercises.exerciseId": exerciseId,
-      "addExercises.date": date,
+      "addExercises._id": id,
     },
     {
       $pull: {
-        addExercises: {
-          exerciseId,
-          date,
-        },
+        addExercises: { _id: id },
       },
     },
     { new: true }
