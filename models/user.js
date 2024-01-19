@@ -35,7 +35,7 @@ const userSchema = new Schema(
       default: 0,
     },
     birthday: {
-      type: Date,
+      type: String,
       validate: {
         validator: function (birthday) {
           return (
@@ -46,6 +46,7 @@ const userSchema = new Schema(
         message: "The user must be over 18 years old.",
       },
     },
+
     blood: {
       type: Number,
       enum: [1, 2, 3, 4],
@@ -116,7 +117,7 @@ const updateUserParamsSchema = Joi.object({
   height: Joi.number().min(150).required(),
   currentWeight: Joi.number().min(35).required(),
   desiredWeight: Joi.number().min(35).required(),
-  birthday: Joi.string().required(),
+  birthday: Joi.date().required(),
   blood: Joi.number().valid(1, 2, 3, 4).required(),
   sex: Joi.string().valid("male", "female").required(),
   levelActivity: Joi.number().valid(1, 2, 3, 4, 5).required(),
