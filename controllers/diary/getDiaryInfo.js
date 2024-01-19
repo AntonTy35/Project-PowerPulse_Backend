@@ -3,13 +3,10 @@ const { Diary } = require("../../models/diaryModel");
 const { HttpError } = require("../../helpers");
 
 const getDairyInfo = async (req, res) => {
-  const { id: owner } = req.user;
+  const { id: owner, bmr: caloriesIntake } = req.user;
   const { date } = req.params;
 
-  const dataInDiary = await Diary.findOne(
-    { owner, date },
-    "-createdAt -updatedAt"
-  )
+  const dataInDiary = await Diary.findOne({ owner, date }, "-createdAt -updatedAt")
     .populate({
       path: "addProducts.productId",
       model: "product",
@@ -23,30 +20,21 @@ const getDairyInfo = async (req, res) => {
 
   const { addProducts, addExercises } = dataInDiary;
 
-  const consumedCalories = addProducts.reduce(
-    (acc, value) => acc + value.calories,
-    0
-  );
+  const consumedCalories = addProducts.reduce((acc, value) => acc + value.calories, 0);
 
-  const burnedCalories = addExercises.reduce(
-    (acc, value) => acc + value.calories,
-    0
-  );
+  const burnedCalories = addExercises.reduce((acc, value) => acc + value.calories, 0);
 
-  const remainingCalories = 2200 - burnedCalories;
+  const remainingCalories = caloriesIntake - burnedCalories;
 
-  const timeForSports = addExercises.reduce(
-    (acc, value) => acc + value.time,
-    0
-  );
+  const timeForSports = addExercises.reduce((acc, value) => acc + value.time, 0);
 
   const remainingSports = 110 - timeForSports;
 
   res.status(200).json({
+    caloriesIntake,
     consumedCalories,
     burnedCalories,
     remainingCalories,
-    timeForSports,
     remainingSports,
     addProducts,
     addExercises,
