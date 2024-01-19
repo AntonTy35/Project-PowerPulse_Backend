@@ -17,6 +17,7 @@ router.post("/signin", validateBody(schemas.signinSchema), ctrl.signin);
 router.post("/logout", authenticate, ctrl.logout);
 
 router.get("/current", authenticate, ctrl.getCurrent);
+
 router.patch(
   "/params",
   authenticate,
