@@ -28,14 +28,14 @@ const updateUserParams = async (req, res) => {
       user: {
         name: updatedUser.name,
         email: updatedUser.email,
+        blood: updatedUser.blood,
+        sex: updatedUser.sex,
         height: updatedUser.height,
         currentWeight: updatedUser.currentWeight,
         desiredWeight: updatedUser.desiredWeight,
-        birthday: updatedUser.birthday,
-        blood: updatedUser.blood,
-        sex: updatedUser.sex,
         levelActivity: updatedUser.levelActivity,
         avatarURL: updatedUser.avatarURL,
+        birthday: updatedUser.birthday,
       },
       bmr,
     });

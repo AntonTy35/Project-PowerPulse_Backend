@@ -22,6 +22,16 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Set password for user"],
     },
+    blood: {
+      type: Number,
+      enum: [1, 2, 3, 4],
+      default: 1,
+    },
+    sex: {
+      type: String,
+      enum: ["male", "female"],
+      default: "male",
+    },
     height: {
       type: Number,
       default: 0,
@@ -33,6 +43,11 @@ const userSchema = new Schema(
     desiredWeight: {
       type: Number,
       default: 0,
+    },
+    levelActivity: {
+      type: Number,
+      enum: [1, 2, 3, 4, 5],
+      default: 1,
     },
     birthday: {
       type: String,
@@ -46,21 +61,9 @@ const userSchema = new Schema(
         message: "The user must be over 18 years old.",
       },
     },
-
-    blood: {
-      type: Number,
-      enum: [1, 2, 3, 4],
-      default: 1,
-    },
-    sex: {
+    avatarURL: {
       type: String,
-      enum: ["male", "female"],
-      default: "male",
-    },
-    levelActivity: {
-      type: Number,
-      enum: [1, 2, 3, 4, 5],
-      default: 1,
+      default: null,
     },
     token: {
       type: String,
@@ -73,10 +76,6 @@ const userSchema = new Schema(
     dailyRateSports: {
       type: Number,
       default: 0,
-    },
-    avatarURL: {
-      type: String,
-      default: null,
     },
     verify: {
       type: Boolean,
@@ -114,13 +113,13 @@ const signinSchema = Joi.object({
 const updateUserParamsSchema = Joi.object({
   name: Joi.string().min(2).max(30).required(),
   email: Joi.string().pattern(emailRegex).required(),
+  blood: Joi.number().valid(1, 2, 3, 4).required(),
+  sex: Joi.string().valid("male", "female").required(),
   height: Joi.number().min(150).required(),
   currentWeight: Joi.number().min(35).required(),
   desiredWeight: Joi.number().min(35).required(),
-  birthday: Joi.date().required(),
-  blood: Joi.number().valid(1, 2, 3, 4).required(),
-  sex: Joi.string().valid("male", "female").required(),
   levelActivity: Joi.number().valid(1, 2, 3, 4, 5).required(),
+  birthday: Joi.date().required(),
 });
 
 const schemas = {

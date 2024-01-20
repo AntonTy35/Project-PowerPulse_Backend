@@ -37,13 +37,12 @@ const signin = async (req, res) => {
       email: user.email,
       blood: user.blood,
       sex: user.sex,
-      birthday: user.birthday,
       height: user.height,
       currentWeight: user.currentWeight,
       desiredWeight: user.desiredWeight,
       levelActivity: user.levelActivity,
       avatarURL: user.avatarURL,
-     
+      birthday: user.birthday,     
     },
     token,
   });
