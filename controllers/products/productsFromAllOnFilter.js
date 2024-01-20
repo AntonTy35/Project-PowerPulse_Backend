@@ -2,18 +2,15 @@ const { Product } = require("../../models/productsModel");
 
 const productsFromAllOnFilter = async (req, res, next) => {
   console.log(
-    "1.1 - це contact Controller - exercisesFilter",
-    req.user._id,
-    req.user.name,
-    "blood- ",
-    req.user.blood,
+    "1.1 - це contact Controller - exercisesFilter",    
     "Filter- ",
     req.query
-  ); //  searchCategory(category) - meat, sausage , fish , berries &
-  // searchWord(title) - beef , Cedar flour, Cedar flour, marlin &
-  // searchFilter(filter) - all , recommended , notRecommended
+  ); 
 
   const userBlood = req.user.blood;
+  var dataUser = [];
+  var numberProductsRecommended = 0;
+  const queryAllFromAll = {}; 
 
   switch (userBlood) {
     case 1:
@@ -30,76 +27,71 @@ const productsFromAllOnFilter = async (req, res, next) => {
       break;
     default:
       groupBlood = "groupBloodNotAllowed.1";
-  }
+  };
 
   const searchCategory = req.query.category;
   let searchWord = req.query.title;
   const searchFilter = req.query.filter;
 
-  const queryAllFromAll = {};
+  if (searchCategory !== undefined) {
+    query.category = searchCategory;
+  };
 
   if (searchWord === undefined) {
     searchWord = "";
-  };  
+  };
 
-  if (searchCategory === undefined) {
-    query = queryAllFromAll;
-  } else {
-    console.log(
-      "1.2 - це contact Controller - exercisesFilter",
-      { searchCategory },
-      { searchWord },
-      { searchFilter }
-    );   
+  const queryAll = {
+    category: searchCategory,
+    filter: searchFilter,
+    title: { $regex: searchWord, $options: "i" },
+  };
 
-    const queryAll = {
-      category: searchCategory,
-      title: { $regex: searchWord, $options: "i" },
-    };
+  const queryRecommended = {
+    [groupBlood]: true,
+    category: searchCategory,
+    title: { $regex: searchWord, $options: "i" },
+  };
 
-    const queryRecommended = {
-      [groupBlood]: true,
-      category: searchCategory,
-      title: { $regex: searchWord, $options: "i" },
-    };
+  const queryNotRecommended = {
+    [groupBlood]: { $ne: true },
+    category: searchCategory,
+    title: { $regex: searchWord, $options: "i" },
+  };
 
-    const queryNotRecommended = {
-      [groupBlood]: { $ne: true },
-      category: searchCategory,
-      title: { $regex: searchWord, $options: "i" },
-    };
+  switch (searchFilter) {
+    case "all":
+      query = queryAll;
+      break;
+    case "recommended":
+      query = queryRecommended;
+      break;
+    case "not-recommended":
+      query = queryNotRecommended;
+      break;
 
-    switch (searchFilter) {
-      case "all":
-        query = queryAll;
-        break;
-      case "recommended":
-        query = queryRecommended;
-        break;
-      case "notRecommended":
-        query = queryNotRecommended;
-        break;
+    default:
+      query = queryAllFromAll;
+  }; 
 
-      default:
-        query = queryAllFromAll;
-    }
-  }  
+  console.log("1.3 - це contact Controller - ", { query });
 
-  console.log("1.3 - це contact Controller - exercisesFilter", { query });
+  if (!query || query.filter === "all") {
+    console.log("1.31 - це contact Controller - ", { query });
+    var dataUser = await Product.find().exec();
+  };
 
-  const dataUser = await Product.find(query).exec();
+  if (query.category) {
+    console.log("1.32 - це contact Controller - ", { query });
+    var dataUser = await Product.find(query).exec();
+  };
 
-  const numberProductsRecommended = dataUser.length;
+  var numberProductsRecommended = dataUser.length;
 
   console.log("1.4 -  - listUser", { numberProductsRecommended });
 
   res.status(200).json({ numberProductsRecommended, dataUser });
-
-  console.log("це contact Controller - listUser", {
-    url: req.originalUrl,
-    statusMessage: res.statusMessage,
-    statusCode: res.statusCode,
-  });
+  
 };
 
 module.exports = {
