@@ -131,9 +131,12 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-
+swagger2.json
 swagger.old.json
 exercises.json
 filters.json
 products.json
 productsCategories.json
+
+.eslintrc.js
+.prettierrc.json
