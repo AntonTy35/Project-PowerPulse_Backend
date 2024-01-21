@@ -33,9 +33,9 @@ const updateUserParams = async (req, res) => {
         height: updatedUser.height,
         currentWeight: updatedUser.currentWeight,
         desiredWeight: updatedUser.desiredWeight,
+        birthday: updatedUser.birthday,
         levelActivity: updatedUser.levelActivity,
         avatarURL: updatedUser.avatarURL,
-        birthday: updatedUser.birthday,
       },
       bmr,
     });
