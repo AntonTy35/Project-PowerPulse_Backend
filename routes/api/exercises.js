@@ -7,7 +7,7 @@ const ctrl = require("../../controllers/exercises");
 const jsonParser = express.json();
 const router = express.Router();
 
-router.get("/:filter", authenticate, ctrl.exercisesFilter);
-router.get("/:filter/:bodyPart", authenticate, ctrl.exercisesAll);
+router.get("/filter", authenticate, ctrl.exercisesFilter);
+router.get("/bodyPart", authenticate, ctrl.exercisesAll);
 
 module.exports = router;

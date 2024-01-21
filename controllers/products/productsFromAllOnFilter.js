@@ -1,16 +1,16 @@
 const { Product } = require("../../models/productsModel");
 
 const productsFromAllOnFilter = async (req, res, next) => {
-  console.log(
-    "1.1 - це contact Controller - exercisesFilter",    
-    "Filter- ",
-    req.query
-  ); 
+  console.log("Filter- ", req.query);
 
   const userBlood = req.user.blood;
   var dataUser = [];
   var numberProductsRecommended = 0;
-  const queryAllFromAll = {}; 
+  const queryAllFromAll = {};
+
+  const searchCategory = req.query.category;
+  let searchWord = req.query.title;
+  const searchFilter = req.query.filter;
 
   switch (userBlood) {
     case 1:
@@ -27,36 +27,32 @@ const productsFromAllOnFilter = async (req, res, next) => {
       break;
     default:
       groupBlood = "groupBloodNotAllowed.1";
+  }
+
+  let queryAll = {
+    ...(searchWord !== undefined && {
+      title: { $regex: searchWord, $options: "i" },
+    }),
+    ...(searchCategory !== undefined && { category: searchCategory }),
+    ...(searchFilter !== undefined && { filter: searchFilter }),
   };
 
-  const searchCategory = req.query.category;
-  let searchWord = req.query.title;
-  const searchFilter = req.query.filter;
-
-  if (searchCategory !== undefined) {
-    query.category = searchCategory;
-  };
-
-  if (searchWord === undefined) {
-    searchWord = "";
-  };
-
-  const queryAll = {
-    category: searchCategory,
-    filter: searchFilter,
-    title: { $regex: searchWord, $options: "i" },
-  };
-
-  const queryRecommended = {
+  let queryRecommended = {
     [groupBlood]: true,
-    category: searchCategory,
-    title: { $regex: searchWord, $options: "i" },
+    ...(searchWord !== undefined && {
+      title: { $regex: searchWord, $options: "i" },
+    }),
+    ...(searchCategory !== undefined && { category: searchCategory }),
+    ...(searchFilter !== undefined && { filter: searchFilter }),
   };
 
-  const queryNotRecommended = {
+  let queryNotRecommended = {
     [groupBlood]: { $ne: true },
-    category: searchCategory,
-    title: { $regex: searchWord, $options: "i" },
+    ...(searchWord !== undefined && {
+      title: { $regex: searchWord, $options: "i" },
+    }),
+    ...(searchCategory !== undefined && { category: searchCategory }),
+    ...(searchFilter !== undefined && { filter: searchFilter }),
   };
 
   switch (searchFilter) {
@@ -71,27 +67,32 @@ const productsFromAllOnFilter = async (req, res, next) => {
       break;
 
     default:
-      query = queryAllFromAll;
-  }; 
+      query = queryAll;
+  }
 
-  console.log("1.3 - це contact Controller - ", { query });
+  if ((searchCategory || searchWord || searchFilter) !== undefined) {
+    if ((searchCategory && searchWord && searchFilter) !== undefined) {
+      var dataUser = await Product.find(query).exec();
+      console.log("Block - 2");
+    } else {
+      var dataUser = await Product.find(query).exec();
+      console.log("Block - 1");
+    }
+  }
 
-  if (!query || query.filter === "all") {
-    console.log("1.31 - це contact Controller - ", { query });
-    var dataUser = await Product.find().exec();
-  };
-
-  if (query.category) {
-    console.log("1.32 - це contact Controller - ", { query });
-    var dataUser = await Product.find(query).exec();
-  };
+  if (
+    searchCategory === undefined &&
+    searchWord === undefined &&
+    searchFilter === undefined
+  ) {
+    console.log("Block - 0");
+  }
 
   var numberProductsRecommended = dataUser.length;
 
-  console.log("1.4 -  - listUser", { numberProductsRecommended });
+  console.log("Filter - ", { numberProductsRecommended });
 
   res.status(200).json({ numberProductsRecommended, dataUser });
-  
 };
 
 module.exports = {
