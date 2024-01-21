@@ -31,12 +31,14 @@ const signup = async (req, res) => {
   };
   const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "30d" });
   newUser.token = token;
+  newUser.createdAt = Date.now();
   await newUser.save();
 
   res.status(201).json({
     user: {
       name: newUser.name,
       email: newUser.email,
+      createdAt: newUser.createdAt,
     },
     token,
   });

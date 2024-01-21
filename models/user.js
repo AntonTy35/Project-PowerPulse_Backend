@@ -22,6 +22,14 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Set password for user"],
     },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+    updatedAt: {
+      type: Date,
+      default: Date.now,
+    },
     blood: {
       type: Number,
       enum: [1, 2, 3, 4],

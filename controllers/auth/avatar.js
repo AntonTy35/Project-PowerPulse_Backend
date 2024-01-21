@@ -5,7 +5,6 @@ const updateUserProfile = async (req, res) => {
     const { _id } = req.user;
     const updates = req.body;
 
-    // Додаткова логіка для обробки фото, якщо потрібно
     if (req.file) {
       updates.avatarURL = req.file.path;
     }

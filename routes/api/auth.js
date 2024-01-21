@@ -31,7 +31,7 @@ router.patch(
 router.patch(
   "/avatar",
   authenticate,
-  updateAvatar.single("avatarURL"),
+  updateAvatar.single("avatar"),
   ctrl.avatar
 );
 
