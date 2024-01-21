@@ -8,6 +8,6 @@ const jsonParser = express.json();
 const router = express.Router();
 
 router.get("/filter", authenticate, ctrl.exercisesFilter);
-router.get("/filter/bodyPart", authenticate, ctrl.exercisesAll);
+router.get("/filter/:bodyPart", authenticate, ctrl.exercisesAll);
 
 module.exports = router;
