@@ -22,8 +22,8 @@ const storage = new CloudinaryStorage({
       folder = "misc";
     }
 
-    const width = req.query.width || 350;
-    const height = req.query.height || 350;
+    const width = req.query.width || 250;
+    const height = req.query.height || 250;
 
     return {
       folder: folder,

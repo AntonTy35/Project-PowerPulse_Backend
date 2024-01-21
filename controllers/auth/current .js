@@ -13,7 +13,7 @@ const getCurrent = async (req, res) => {
       levelActivity: user.levelActivity,
       avatarURL: user.avatarURL,
       birthday: user.birthday,
-      userParams: user.userParams,
+      createdAt: user.createdAt,
     },
     token: user.token,
   });

@@ -4,7 +4,7 @@ const updateUserProfile = async (req, res) => {
   try {
     const { _id } = req.user;
     const updates = req.body;
-    
+
     if (req.file) {
       updates.avatarURL = req.file.path;
     }
