@@ -12,17 +12,11 @@ const jsonParser = express.json();
 const router = express.Router();
 
 router.get("/categories", authenticate, ctrl.productsCategories);
-router.get("/", authenticate, ctrl.productsAll);
 router.get(
-  "/:allOnFilter",
+  "/filter",
   authenticate,
   ctrl.productsFromAllOnFilter
 );
-router.get("/:blood/recommended", authenticate, ctrl.productsRecommended);
-router.get(
-  "/:blood/not-recommended",
-  authenticate,
-  ctrl.productsNotRecommended
-);
+
 
 module.exports = router;
