@@ -24,7 +24,9 @@ const getDairyInfo = async (req, res) => {
 
   const burnedCalories = addExercises.reduce((acc, value) => acc + value.calories, 0);
 
-  const remainingCalories = caloriesIntake - burnedCalories;
+  const remainingCalories = caloriesIntake - consumedCalories;
+
+  // const remainingCalories = caloriesIntake - burnedCalories;
 
   const timeForSports = addExercises.reduce((acc, value) => acc + value.time, 0);
 
