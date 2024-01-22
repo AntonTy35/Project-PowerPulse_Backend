@@ -10,18 +10,18 @@ const addDiaryExercises = async (req, res) => {
       "addExercises.exerciseId": exerciseId,
       "addExercises.date": date,
     },
-    {
-      $set: {
-        "addExercises.$.time": time,
-        "addExercises.$.calories": calories,
-      },
-    },
     // {
-    //   $inc: {
-    //     "addExercises.$.time": +time,
-    //     "addExercises.$.calories": +calories,
+    //   $set: {
+    //     "addExercises.$.time": time,
+    //     "addExercises.$.calories": calories,
     //   },
     // },
+    {
+      $inc: {
+        "addExercises.$.time": +time,
+        "addExercises.$.calories": +calories,
+      },
+    },
     { new: true }
   ).populate("addExercises.exerciseId");
 
