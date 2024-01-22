@@ -10,18 +10,18 @@ const addDiaryProducts = async (req, res) => {
       "addProducts.productId": productId,
       "addProducts.date": date,
     },
-    {
-      $set: {
-        "addProducts.$.amount": amount,
-        "addProducts.$.calories": calories,
-      },
-    },
     // {
-    //   $inc: {
-    //     "addProducts.$.amount": +amount,
-    //     "addProducts.$.calories": +calories,
+    //   $set: {
+    //     "addProducts.$.amount": amount,
+    //     "addProducts.$.calories": calories,
     //   },
     // },
+    {
+      $inc: {
+        "addProducts.$.amount": +amount,
+        "addProducts.$.calories": +calories,
+      },
+    },
     { new: true }
   ).populate("addProducts.productId");
 
