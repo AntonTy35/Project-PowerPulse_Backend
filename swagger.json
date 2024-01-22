@@ -5,8 +5,8 @@
     "title": "PowerPulse API",
     "description": "API documentation for Power Pulse Server",
     "license": {
-      "name": "MIT",
-      "url": "https://opensource.org/licenses/MIT"
+      "name": "PowerPulse by Project Group 09",
+      "url": "https://github.com/NikNas1405/PowerPulse"
     }
   },
   "consumes": ["application/json", "multipart/form-data"],
@@ -76,6 +76,24 @@
           "409": {
             "description": "Conflict (provided email already exists)",
             "content": {}
+          }
+        }
+      }
+    },
+    "/verify/{verificationToken}": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Verify email with token",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Email verification successful"
+          },
+          "400": {
+            "description": "Bad request (invalid token)"
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
           }
         }
       }
@@ -163,6 +181,9 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ParamsRequest"
+              },
+              "example":{
+                "avatarURL":""
               }
             }
           }
@@ -174,6 +195,49 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ParamsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body or ID)"
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/auth/avatar": {
+      "patch": {
+        "tags": ["Auth"],
+        "summary": "Update user avatar",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Updated user avatar",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AvatarRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User avatar updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvatarResponse"
                 }
               }
             }
@@ -232,7 +296,6 @@
       }
     },
 
-
     "/api/products/categories": {
       "get": {
         "tags": ["Products"],
@@ -241,44 +304,97 @@
         "security": [{ "Bearer": [] }],        
         "responses": {
           "201": {
-            "description": "Successful creation",
+            "description": "Successful",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CategoriesResponse"
-                },
-                "example": {}
+                }
               }
             }
           },
           "401": {
-            "description": "Unauthorized (invalid token)"
+            "description": "Unauthorized (invalid token)",
+            "content": {}
           },
           "404": {
-            "description": "Not found"
+            "description": "Not found",
+            "content": {}
           },
           "500": {
-            "description": "Server error"
+            "description": "Server error",
+            "content": {}
           }
         }
       }
       
-    },    
-    "/api/products/{allOnFilter}": {
+    },
+    "/api/products/filter": {
       "get": {
         "tags": ["Products"],
         "summary": "Get all products",
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "title",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Title of products in data user"
+          },
+          {
+            "in": "query",
+            "name": "category",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "alcoholic drinks",
+                "berries",
+                "cereals",
+                "dairy",
+                "dried fruits",
+                "eggs",
+                "fish",
+                "flour",
+                "fruits",
+                "meat",
+                "mushrooms",
+                "nuts",
+                "oils and fats",
+                "poppy",
+                "sausage",
+                "seeds",
+                "sesame",
+                "soft drinks",
+                "vegetables and herbs"
+              ]
+            },
+            "description": "Category of products"
+          },          
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "all",
+                "recommended",
+                "not-recommended"
+              ],
+              "default": "all"
+            },
+            "description": "Filter of products"
+          }
+        ],
         "security": [{ "Bearer": [] }],        
         "responses": {
           "201": {
-            "description": "Successful creation",
+            "description": "Successful",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProductResponse"
-                },
-                "example": {}
+                  "$ref": "#/components/schemas/ProductsFilterResponse"
+                }
               }
             }
           },
@@ -295,7 +411,9 @@
       }
       
     },
-    "/api/exercises/{filter}": {
+
+
+    "/api/exercises/filter": {
       "get": {
         "tags": ["Exercises"],
         "summary": "Get exercises",
@@ -326,7 +444,7 @@
       }
       
     },
-    "/api/exercises/{filter}/:bodyPart": {
+    "/api/exercises/filter/{bodyPart}": {
       "get": {
         "tags": ["Exercises"],
         "summary": "Get categories exercises",
@@ -357,37 +475,8 @@
       }
       
     },
-    "/api/diary/{date}": {
-      "get": {
-        "tags": ["Diary"],
-        "summary": "Get diary by date",
-        "parameters": [],
-        "security": [{ "Bearer": [] }],        
-        "responses": {
-          "201": {
-            "description": "Successful creation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DiaryResponse"
-                },
-                "example": {}
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized (invalid token)"
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "500": {
-            "description": "Server error"
-          }
-        }
-      }
-      
-    },
+
+
     "/api/diary/products": {
       "post": {
         "tags": ["Diary"],
@@ -551,6 +640,37 @@
           "description": "Conflict (Email already in use)"
         }
       }
+    },
+    "/api/diary/{date}": {
+      "get": {
+        "tags": ["Diary"],
+        "summary": "Get diary by date",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],        
+        "responses": {
+          "201": {
+            "description": "Successful creation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiaryResponse"
+                },
+                "example": {}
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+      
     }
   },
 
@@ -626,63 +746,59 @@
             "properties": {              
               "name": {
                 "type": "string",
-                "description": "User's name"
+                "description": "User's name",
+                "example": "Power Pulse"
               },
               "email": {
                 "type": "string",
-                "description": "User's email"
+                "description": "User's email",
+                "example": "powerpulse@goit.com"
               },
               "blood": {
                 "type": "number",
                 "description": "User's blood type",
-                "enum": ["1", "2", "3", "4"]
+                "enum": ["1", "2", "3", "4"],
+                "example": 1
               },
               "sex": {
                 "type": "string",
                 "description": "User's gender",
-                "enum": ["male", "female"]
+                "enum": ["male", "female"],
+                "example": "male"
               },              
               "height": {
                 "type": "number",
-                "description": "User's height"
+                "description": "User's height",
+                "example": 0
               },
               "currentWeight": {
                 "type": "number",
-                "description": "User's current weight"
+                "description": "User's current weight",
+                "example": 0
               },
               "desiredWeight": {
                 "type": "number",
-                "description": "User's desired weight"
+                "description": "User's desired weight",
+                "example": 0
               },
               "levelActivity": {
                 "type": "number",
                 "description": "User's level activity",
-                "enum": ["1", "2", "3", "4", "5"]
+                "enum": ["1", "2", "3", "4", "5"],
+                "example": 1
               },
               "avatarURL": {
                 "type": "string",
-                "description": "User's avatar URL"
+                "description": "User's avatar URL",
+                "example": "//www.gravatar.com/avatar/2539b2169b228256128de51b7960d32c"
               }
             }
           },
           "token": {
             "type": "string",
-            "description": "JWT token for authentication"
+            "description": "JWT token for authentication",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YWFmYWRhMmU1MjJiMzhhNWYwNTAyNyIsImlhdCI6MTcwNTcxNDE5NCwiZXhwIjoxNzA4MzA2MTk0fQ.8zpaoGrvQtustURtEStObpcAzaW_T9EH0HfEVpc_ql8"
           }
-        },
-        "example": {
-          "user": {
-            "name": "Power Pulse",
-            "email": "powerpulse@goit.com",
-            "blood": 1,
-            "sex": "male",
-            "height": 0,
-            "currentWeight": 0,
-            "desiredWeight": 0,
-            "levelActivity": 1,
-            "avatarURL": "//www.gravatar.com/avatar/2539b2169b228256128de51b7960d32c"
-          },
-          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YWFmYWRhMmU1MjJiMzhhNWYwNTAyNyIsImlhdCI6MTcwNTcxNDE5NCwiZXhwIjoxNzA4MzA2MTk0fQ.8zpaoGrvQtustURtEStObpcAzaW_T9EH0HfEVpc_ql8"
         }
       },
       "ParamsRequest": {
@@ -807,8 +923,167 @@
             "example": "2141"
           }
         }
-      }    
-  },
+      },
+      "CategoriesResponse": {
+        "type": "object",
+        "properties": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "The names of product categories"
+          }
+        },
+        "example": [
+          "alcoholic drinks",
+          "berries",
+          "cereals",
+          "dairy",
+          "dried fruits",
+          "eggs",
+          "fish",
+          "flour",
+          "fruits",
+          "meat",
+          "mushrooms",
+          "nuts",
+          "oils and fats",
+          "poppy",
+          "sausage",
+          "seeds",
+          "sesame",
+          "soft drinks",
+          "vegetables and herbs"
+        ]
+      },
+      "ProductsFilterResponse": {
+        "type": "object",
+        "properties": {
+          "numberProductsRecommended": {
+            "type": "integer",
+            "description": "Total number of items",
+            "example": 1
+          },
+          "dataUser": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "product id",
+                  "example": "5d51694902b2373622ff5c95"
+                },
+                "weight": {
+                  "type": "number",
+                  "description": "product weight",
+                  "example": 100
+                },
+                "calories": {
+                  "type": "number",
+                  "description": "product calories",
+                  "example": 213
+                },
+                "category": {
+                  "type": "string",
+                  "description": "product category",
+                  "example": "nuts"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "product title",
+                  "example": "Canned chestnut"
+                },
+                "groupBloodNotAllowed": {
+                  "type": "object",
+                  "description": "Blood group",
+                  "example": {
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": true
+                  }                 
+                  
+                }
+              }
+            }
+          }
+        }  
+      },
+      "AvatarRequest": {
+        "type": "object",
+        "required": ["avatarURL"],
+        "properties": {          
+          "avatarURL": {
+            "type": "string",
+            "description": "User's avatar URL",
+            "example": ""
+          }
+        }
+      },
+      "AvatarResponse": {        
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "product id",
+            "example": "5d51694902b2373622ff5c95"
+          },
+          "weight": {
+            "type": "number",
+            "description": "product weight",
+            "example": 100
+          },
+          "calories": {
+            "type": "number",
+            "description": "product calories",
+            "example": 213
+          },
+          "category": {
+            "type": "string",
+            "description": "product category",
+            "example": "nuts"
+          },
+          "title": {
+            "type": "string",
+            "description": "product title",
+            "example": "Canned chestnut"
+          },
+          "groupBloodNotAllowed": {
+            "type": "object",
+            "description": "Blood group",
+            "example": {
+              "1": false,
+              "2": false,
+              "3": false,
+              "4": true
+            }                 
+            
+          }
+        },
+        "example":{
+        "_id": "65aafada2e522b38a5f05027",
+        "name": "Power Pulse",
+        "email": "powerpulse@goit.com",
+        "password": "$2b$10$YTaqntUFFRhk2C2.f6haneUWct9Osw1vd.7w1KnCelzay3mxni1dO",
+        "height": 150,
+        "currentWeight": 35,
+        "desiredWeight": 35,
+        "blood": 1,
+        "sex": "male",
+        "levelActivity": 1,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YWFmYWRhMmU1MjJiMzhhNWYwNTAyNyIsImlhdCI6MTcwNTg4NTQwNywiZXhwIjoxNzA4NDc3NDA3fQ.pOOBX-AjuMCX6FDFJXXtBPYZ_6nF4V_GXzKIh9NTVII",
+        "bmr": 1413,
+        "dailyRateSports": 0,
+        "avatarURL": "",
+        "verify": true,
+        "verificationToken": "e8429c3b-e84d-4d4d-8d9c-fc9867812f56",
+        "confirmationOfVerification": 0,
+        "createdAt": "2024-01-19T22:42:34.901Z",
+        "updatedAt": "2024-01-22T02:30:35.198Z",
+        "birthday": "01/20/2001"
+        }   
+      }
+    },
     "securitySchemes": {
       "Bearer": {
         "type": "http",
