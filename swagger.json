@@ -64,7 +64,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SignupResponse"
+                  "$ref": "#/components/schemas/SigninResponse"
                 }
               }
             }
@@ -181,9 +181,6 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ParamsRequest"
-              },
-              "example":{
-                "avatarURL":""
               }
             }
           }
@@ -295,7 +292,6 @@
         }
       }
     },
-
     "/api/products/categories": {
       "get": {
         "tags": ["Products"],
@@ -411,13 +407,26 @@
       }
       
     },
-
-
     "/api/exercises/filter": {
       "get": {
         "tags": ["Exercises"],
         "summary": "Get exercises",
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Body parts",
+                "Equipment",
+                "Muscles"
+              ],
+              "default": ""
+            },
+            "description": "Filter of exercises"
+          }
+        ],
         "security": [{ "Bearer": [] }],        
         "responses": {
           "201": {
@@ -426,8 +435,7 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ExercisesResponse"
-                },
-                "example": {}
+                }
               }
             }
           },
@@ -448,7 +456,29 @@
       "get": {
         "tags": ["Exercises"],
         "summary": "Get categories exercises",
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "bodyPart",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "chest",
+                "upper legs",
+                "upper arms",
+                "lower arms",
+                "lower legs",
+                "shoulders",
+                "waist",
+                "cardio",
+                "back",
+                "neck"
+              ],
+              "default": ""
+            },
+            "description": "Body part exercises"
+          }
+        ],
         "security": [{ "Bearer": [] }],        
         "responses": {
           "201": {
@@ -456,9 +486,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExercisesResponse"
-                },
-                "example": {}
+                  "$ref": "#/components/schemas/ExercisesBodyPartResponse"
+                }
               }
             }
           },
@@ -475,8 +504,35 @@
       }
       
     },
-
-
+    "/api/diary/{date}": {
+      "get": {
+        "tags": ["Diary"],
+        "summary": "Get diary by date",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],        
+        "responses": {
+          "201": {
+            "description": "Successful creation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiaryResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }      
+    },
     "/api/diary/products": {
       "post": {
         "tags": ["Diary"],
@@ -490,31 +546,27 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/DiaryProductRequest"
-              },
-              "example": {}
-            }
-          }
-        }
-      },
-      "responses": {
-        "201": {
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DiaryProductResponse"
-              },
-              "example": {
-
               }
             }
           }
         },
-        "400": {
-          "description": "Bad request (invalid request body)"
-        },
-        "409": {
-          "description": "Conflict (Email already in use)"
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiaryProductResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },        
+          "500": {
+            "description": "Server error"
+          }
         }
       }
     },
@@ -522,40 +574,33 @@
       "delete": {
         "tags": ["Diary"],
         "summary": "Delete user diary product",
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "description": "Diary product ID",
+            "example": "5d51694902b2373622ff5773"
+          }
+        ],
         "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "description": "Diary object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DiaryProductRequest"
-              },
-              "example": {}
-            }
+        "responses": {
+          "201": {
+            "description": "Product deleted from diary successfully",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "404": {
+            "description": "Product not found in diary",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error"
           }
-        }
-      },
-      "responses": {
-        "201": {
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DiaryProductResponse"
-              },
-              "example": {
-
-              }
-            }
-          }
-        },
-        "400": {
-          "description": "Bad request (invalid request body)"
-        },
-        "409": {
-          "description": "Conflict (Email already in use)"
         }
       }
     },
@@ -572,31 +617,27 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/DiaryExercisesRequest"
-              },
-              "example": {}
-            }
-          }
-        }
-      },
-      "responses": {
-        "201": {
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DiaryExercisesResponse"
-              },
-              "example": {
-
               }
             }
           }
-        },
-        "400": {
-          "description": "Bad request (invalid request body)"
-        },
-        "409": {
-          "description": "Conflict (Email already in use)"
+        },      
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiaryExercisesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },        
+          "500": {
+            "description": "Server error"
+          }
         }
       }
     },
@@ -604,74 +645,36 @@
       "delete": {
         "tags": ["Diary"],
         "summary": "Delete user diary exercises",
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "description": "Diary exercise ID",
+            "example": "64f2458d6f67bc34bae4f813"
+          }
+        ],
         "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "description": "Diary object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DiaryExercisesRequest"
-              },
-              "example": {}
-            }
-          }
-        }
-      },
-      "responses": {
-        "201": {
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DiaryExercisesResponse"
-              },
-              "example": {
-
-              }
-            }
-          }
-        },
-        "400": {
-          "description": "Bad request (invalid request body)"
-        },
-        "409": {
-          "description": "Conflict (Email already in use)"
-        }
-      }
-    },
-    "/api/diary/{date}": {
-      "get": {
-        "tags": ["Diary"],
-        "summary": "Get diary by date",
-        "parameters": [],
-        "security": [{ "Bearer": [] }],        
         "responses": {
           "201": {
-            "description": "Successful creation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DiaryResponse"
-                },
-                "example": {}
-              }
-            }
+            "description": "Exercise deleted from diary successfully",
+            "content": {}
           },
-          "401": {
-            "description": "Unauthorized (invalid token)"
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
           },
           "404": {
-            "description": "Not found"
+            "description": "Exercise not found in diary",
+            "content": {}
           },
           "500": {
             "description": "Server error"
           }
         }
       }
-      
-    }
+    }    
   },
 
   "components": {    
@@ -791,6 +794,11 @@
                 "type": "string",
                 "description": "User's avatar URL",
                 "example": "//www.gravatar.com/avatar/2539b2169b228256128de51b7960d32c"
+              },
+              "createdAt": {
+                "type": "string",
+                "description": "User's create date",
+                "example": "2024-01-22T18:43:55.351Z"
               }
             }
           },
@@ -1016,72 +1024,570 @@
           "avatarURL": {
             "type": "string",
             "description": "User's avatar URL",
-            "example": ""
+            "example": "https://ftp.goit.study/img/power-pulse/filters/back_wzzphw.jpg"
           }
         }
       },
       "AvatarResponse": {        
         "type": "object",
         "properties": {
-          "_id": {
+          "name": {
             "type": "string",
-            "description": "product id",
-            "example": "5d51694902b2373622ff5c95"
+            "description": "User name",
+            "example":"Power Pulse"
           },
-          "weight": {
+          "avatarURL": {
+            "type": "string",
+            "description": "User avatar",
+            "example" : "https://ftp.goit.study/img/power-pulse/filters/back_wzzphw.jpg"
+          }
+        }   
+      },
+      "ExercisesResponse":{
+        "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "product id",
+                  "example": "650f35ece3f5522fc6396289"
+                },
+                "filter": {
+                  "type": "string",
+                  "description": "Exercises type",
+                  "example": "Body parts"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Exercises name",
+                  "example": "back"
+                },
+                "imgURL": {
+                  "type": "string",
+                  "description": "Exercises image",
+                  "example": "https://ftp.goit.study/img/power-pulse/filters/back_wzzphw.jpg"
+                }
+              }
+            }
+          
+      },
+      "ExercisesBodyPartResponse":{        
+        "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "product id",
+                  "example": "64f2458d6f67bc34bae4fa5b"
+                },
+                "bodyPart": {
+                  "type": "string",
+                  "description": "Body part type",
+                  "example": "waist"
+                },
+                "equipment": {
+                  "type": "string",
+                  "description": "Equipment name",
+                  "example": "dumbbell"
+                },
+                "gifUrl": {
+                  "type": "string",
+                  "description": "Exercises gif",
+                  "example": "https://ftp.goit.study/img/power-pulse/gifs/0777.gif"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Name",
+                  "example": "spell caster"
+                },
+                "target": {
+                  "type": "string",
+                  "description": "Target name",
+                  "example": "abs"
+                },
+                "burnedCalories": {
+                  "type": "number",
+                  "description": "Burned calories",
+                  "example": 192
+                },
+                "time": {
+                  "type": "number",
+                  "description": "Exercise time",
+                  "example": 3
+                }
+              }
+            }
+          
+      
+      },
+      "DiaryResponse": {
+        "type": "object",
+        "properties": {
+          "caloriesIntake": {
             "type": "number",
-            "description": "product weight",
-            "example": 100
+            "description": "dairy calories intake",
+            "example": 2786
+          },
+          "consumedCalories": {
+            "type": "number",
+            "description": "dairy calories consumed",
+            "example": 48
+          },
+          "burnedCalories": {
+            "type": "number",
+            "description": "dairy calories burned",
+            "example": 264
+          },
+          "remainingCalories": {
+            "type": "number",
+            "description": "dairy calories remaining",
+            "example": 2738
+          },
+          "remainingSports": {
+            "type": "number",
+            "description": "dairy sports remaining",
+            "example": 107
+          },
+          "addProducts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "object",
+                  "description": "product id",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "description": "product id",
+                      "example": "5d51694902b2373622ff5773"
+                    },
+                    "weight": {
+                      "type": "number",
+                      "description": "weight",
+                      "example": 100
+                    },
+                    "calories": {
+                      "type": "number",
+                      "description": "calories",
+                      "example": 340
+                    },
+                    "category": {
+                      "type": "string",
+                      "description": "category",
+                      "example": "dairy"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "title",
+                      "example": "Danbo cheese"
+                    },
+                    "groupBloodNotAllowed": {
+                      "type": "object",
+                      "description": "group of blood",
+                      "properties": {
+                        "1": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "2": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "3": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "4": {
+                          "type": "boolean",
+                          "example": false
+                        }
+                      }
+                    }
+                  }
+                },
+                "date": {
+                  "type": "string",
+                  "description": "dairy product date",
+                  "example": "13-01-2024"
+                },
+                "amount": {
+                  "type": "number",
+                  "description": "amount of product",
+                  "example": 100
+                },
+                "calories": {
+                  "type": "number",
+                  "description": "calories amount",
+                  "example": 150
+                },
+                "_id": {
+                  "type": "string",
+                  "description": "diary product id",
+                  "example": "65ae8a6ff2903af360c6dff5"
+                }
+              }
+            }
+          },
+          "addExercises": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "exerciseId": {
+                  "type": "object",
+                  "description": "exercise id",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "description": "exercise id",
+                      "example": "64f2458d6f67bc34bae4f7f7"
+                    },
+                    "bodyPart": {
+                      "type": "string",
+                      "description": "body part",
+                      "example": "chest"
+                    },
+                    "equipment": {
+                      "type": "string",
+                      "description": "equipment",
+                      "example": "leverage machine"
+                    },
+                    "gifUrl": {
+                      "type": "string",
+                      "description": "gif url",
+                      "example": "https://ftp.goit.study/img/power-pulse/gifs/0009.gif"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "exercise name",
+                      "example": "assisted chest dip (kneeling)"
+                    },
+                    "target": {
+                      "type": "string",
+                      "description": "target",
+                      "example": "pectorals"
+                    },
+                    "burnedCalories": {
+                      "type": "number",
+                      "description": "burned calories",
+                      "example": 329
+                    },
+                    "time": {
+                      "type": "number",
+                      "description": "time for exercise",
+                      "example": 3
+                    }
+                  }
+                },
+                "date": {
+                  "type": "string",
+                  "description": "dairy exercise date",
+                  "example": "13-01-2024"
+                },
+                "time": {
+                  "type": "number",
+                  "description": "time for exercise",
+                  "example": 3
+                },
+                "calories": {
+                  "type": "number",
+                  "description": "calories amount",
+                  "example": 329
+                },
+                "_id": {
+                  "type": "string",
+                  "description": "diary exercise id",
+                  "example": "65ae8a6ff2903af360c6dff5"
+                }
+              }
+            }
+          }
+        }
+      },
+      "DiaryProductRequest":{
+        "type": "object",
+        "required": ["productId", "date", "amount", "calories"],
+        "properties": {
+          "productId": {
+            "type": "string",
+            "description": "Product Id",
+            "example": "64f2458d6f67bc34bae4f7f7"
+          },
+          "date": {
+            "type": "string",
+            "validate": ["The format of date: dd-MM-yyyy"],
+            "description": "Date the product was eaten",
+            "example": "22-01-2024"
+          },
+          "amount": {
+            "type": "number",            
+            "description": "Amount of products",
+            "example": 150
           },
           "calories": {
             "type": "number",
-            "description": "product calories",
-            "example": 213
-          },
-          "category": {
-            "type": "string",
-            "description": "product category",
-            "example": "nuts"
-          },
-          "title": {
-            "type": "string",
-            "description": "product title",
-            "example": "Canned chestnut"
-          },
-          "groupBloodNotAllowed": {
-            "type": "object",
-            "description": "Blood group",
-            "example": {
-              "1": false,
-              "2": false,
-              "3": false,
-              "4": true
-            }                 
-            
+            "min": [1, "The calories cannot be less than 1 minute"],
+            "description": "Burned calories",
+            "example": 150
           }
-        },
-        "example":{
-        "_id": "65aafada2e522b38a5f05027",
-        "name": "Power Pulse",
-        "email": "powerpulse@goit.com",
-        "password": "$2b$10$YTaqntUFFRhk2C2.f6haneUWct9Osw1vd.7w1KnCelzay3mxni1dO",
-        "height": 150,
-        "currentWeight": 35,
-        "desiredWeight": 35,
-        "blood": 1,
-        "sex": "male",
-        "levelActivity": 1,
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YWFmYWRhMmU1MjJiMzhhNWYwNTAyNyIsImlhdCI6MTcwNTg4NTQwNywiZXhwIjoxNzA4NDc3NDA3fQ.pOOBX-AjuMCX6FDFJXXtBPYZ_6nF4V_GXzKIh9NTVII",
-        "bmr": 1413,
-        "dailyRateSports": 0,
-        "avatarURL": "",
-        "verify": true,
-        "verificationToken": "e8429c3b-e84d-4d4d-8d9c-fc9867812f56",
-        "confirmationOfVerification": 0,
-        "createdAt": "2024-01-19T22:42:34.901Z",
-        "updatedAt": "2024-01-22T02:30:35.198Z",
-        "birthday": "01/20/2001"
-        }   
+        }
+      },
+      "DiaryProductResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Product added to diary successfully"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "diary id",
+                "example": "65ae8a6f5d81f9d9e95ec829"
+              },
+              "date": {
+                "type": "string",
+                "description": "dairy date",
+                "example": "13-01-2024"
+              },
+              "owner": {
+                "type": "string",
+                "description": "owner user's id",
+                "example": "65aafada2e522b38a5f05027"
+              },
+              "addProducts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "productId": {
+                      "type": "object",
+                      "description": "product id",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "description": "product id",
+                          "example": "5d51694902b2373622ff5773"
+                        },
+                        "weight": {
+                          "type": "number",
+                          "description": "weight",
+                          "example": 100
+                        },
+                        "calories": {
+                          "type": "number",
+                          "description": "calories",
+                          "example": 340
+                        },
+                        "category": {
+                          "type": "string",
+                          "description": "category",
+                          "example": "dairy"
+                        },
+                        "title": {
+                          "type": "string",
+                          "description": "title",
+                          "example": "Danbo cheese"
+                        },
+                        "groupBloodNotAllowed": {
+                          "type": "object",
+                          "description": "group of blood",
+                          "properties": {
+                            "1": {
+                              "type": "boolean",
+                              "example": true
+                            },
+                            "2": {
+                              "type": "boolean",
+                              "example": true
+                            },
+                            "3": {
+                              "type": "boolean",
+                              "example": false
+                            },
+                            "4": {
+                              "type": "boolean",
+                              "example": false
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "date": {
+                      "type": "string",
+                      "description": "dairy product date",
+                      "example": "13-01-2024"
+                    },
+                    "amount": {
+                      "type": "number",
+                      "description": "amount of product",
+                      "example": 100
+                    },
+                    "calories": {
+                      "type": "number",
+                      "description": "calories amount",
+                      "example": 150
+                    },
+                    "_id": {
+                      "type": "string",
+                      "description": "diary product id",
+                      "example": "65ae8a6ff2903af360c6dff5"
+                    }
+                  }
+                }
+              },
+              "addExercises": {
+                "type": "array",
+                "items": {
+                  "type":"object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "DiaryExercisesRequest": {
+        "type": "object",
+        "required": ["exerciseId", "date", "time", "calories"],
+        "properties": {
+          "exerciseId": {
+            "type": "string",
+            "description": "Exercise Id",
+            "example": "64f2458d6f67bc34bae4f7f4"
+          },
+          "date": {
+            "type": "string",
+            "validate": ["The format of date: dd-MM-yyyy"],
+            "description": "Date of performing the exercise",
+            "example": "13-01-2024"
+          },
+          "time": {
+            "type": "number",
+            "min": [1, "The time cannot be less than 1 minute"],
+            "description": "Time for exercise",
+            "example": 13
+          },
+          "calories": {
+            "type": "number",
+            "min": [1, "The calories cannot be less than 1 minute"],
+            "description": "Burned calories",
+            "example": 123
+          }
+        }
+      },
+      "DiaryExercisesResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Exercise added to diary successfully"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "diary id",
+                "example": "65ae8a6f5d81f9d9e95ec829"
+              },
+              "date": {
+                "type": "string",
+                "description": "dairy  date",
+                "example": "13-01-2024"
+              },
+              "owner": {
+                "type": "string",
+                "description": "owner user's id",
+                "example": "65aafada2e522b38a5f05027"
+              },
+              "addExercises": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "exerciseId": {
+                      "type": "object",
+                      "description": "exercise id",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "description": "exercise id",
+                          "example": "64f2458d6f67bc34bae4f7f7"
+                        },
+                        "bodyPart": {
+                          "type": "string",
+                          "description": "body part",
+                          "example": "chest"
+                        },
+                        "equipment": {
+                          "type": "string",
+                          "description": "equipment",
+                          "example": "leverage machine"
+                        },
+                        "gifUrl": {
+                          "type": "string",
+                          "description": "gif url",
+                          "example": "https://ftp.goit.study/img/power-pulse/gifs/0009.gif"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "exercise name",
+                          "example": "assisted chest dip (kneeling)"
+                        },
+                        "target": {
+                          "type": "string",
+                          "description": "target",
+                          "example": "pectorals"
+                        },
+                        "burnedCalories": {
+                          "type": "number",
+                          "description": "burned calories",
+                          "example": 329
+                        },
+                        "time": {
+                          "type": "number",
+                          "description": "time for exercise",
+                          "example": 3
+                        }
+                      }
+                    },
+                    "date": {
+                      "type": "string",
+                      "description": "dairy exercise date",
+                      "example": "13-01-2024"
+                    },
+                    "time": {
+                      "type": "number",
+                      "description": "time for exercise",
+                      "example": 3
+                    },
+                    "calories": {
+                      "type": "number",
+                      "description": "calories amount",
+                      "example": 329
+                    },
+                    "_id": {
+                      "type": "string",
+                      "description": "diary exercise id",
+                      "example": "65ae8a6ff2903af360c6dff5"
+                    }
+                  }
+                }
+              },
+              "addProducts": {
+                "type": "array",
+                "items": {
+                  "type":"object"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "securitySchemes": {
