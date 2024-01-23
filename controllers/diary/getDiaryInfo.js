@@ -6,10 +6,7 @@ const getDairyInfo = async (req, res) => {
   const { id: owner, bmr: caloriesIntake } = req.user;
   const { date } = req.params;
 
-  const dataInDiary = await Diary.findOne(
-    { owner, date },
-    "-createdAt -updatedAt"
-  )
+  const dataInDiary = await Diary.findOne({ owner, date }, "-createdAt -updatedAt")
     .populate({
       path: "addProducts.productId",
       model: "product",
@@ -23,22 +20,13 @@ const getDairyInfo = async (req, res) => {
 
   const { addProducts, addExercises } = dataInDiary;
 
-  const consumedCalories = addProducts.reduce(
-    (acc, value) => acc + value.calories,
-    0
-  );
+  const consumedCalories = addProducts.reduce((acc, value) => acc + value.calories, 0);
 
-  const burnedCalories = addExercises.reduce(
-    (acc, value) => acc + value.calories,
-    0
-  );
+  const burnedCalories = addExercises.reduce((acc, value) => acc + value.calories, 0);
 
   const remainingCalories = caloriesIntake - consumedCalories;
 
-  const timeForSports = addExercises.reduce(
-    (acc, value) => acc + value.time,
-    0
-  );
+  const timeForSports = addExercises.reduce((acc, value) => acc + value.time, 0);
 
   const remainingSports = 110 - timeForSports;
 
