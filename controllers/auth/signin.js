@@ -43,8 +43,8 @@ const signin = async (req, res) => {
       levelActivity: user.levelActivity,
       avatarURL: user.avatarURL,
       birthday: user.birthday,
-      bmr: user.bmr,
     },
+    bmr: user.bmr,
     token,
   });
 };
