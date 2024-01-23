@@ -64,7 +64,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SigninResponse"
+                  "$ref": "#/components/schemas/SignupResponse"
                 }
               }
             }
@@ -135,7 +135,7 @@
           }
         }
       }
-    },
+    },    
     "/api/auth/current": {
       "get": {
         "tags": ["Auth"],
@@ -148,7 +148,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SigninResponse"
+                  "$ref": "#/components/schemas/CurrentResponse"
                 }
               }
             }
@@ -197,16 +197,20 @@
             }
           },
           "400": {
-            "description": "Bad request (invalid request body or ID)"
+            "description": "Bad request (invalid request body or ID)",
+            "content": {}
           },
           "401": {
-            "description": "Unauthorized (invalid token)"
+            "description": "Unauthorized (invalid token)",
+            "content": {}
           },
           "404": {
-            "description": "User not found"
+            "description": "User not found",
+            "content": {}
           },
           "500": {
-            "description": "Server error"
+            "description": "Server error",
+            "content": {}
           }
         }
       }
@@ -218,10 +222,10 @@
         "parameters": [],
         "security": [{ "Bearer": [] }],
         "requestBody": {
-          "description": "Updated user avatar",
+          "description": "Upload user avatar",
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "$ref": "#/components/schemas/AvatarRequest"
               }
@@ -240,16 +244,20 @@
             }
           },
           "400": {
-            "description": "Bad request (invalid request body or ID)"
+            "description": "Bad request (invalid request body or ID)",
+            "content": {}
           },
           "401": {
-            "description": "Unauthorized (invalid token)"
+            "description": "Unauthorized (invalid token)",
+            "content": {}
           },
           "404": {
-            "description": "User not found"
+            "description": "User not found",
+            "content": {}
           },
           "500": {
-            "description": "Server error"
+            "description": "Server error",
+            "content": {}
           }
         }
       }
@@ -281,13 +289,16 @@
             }
           },
           "401": {
-            "description": "Unauthorized (invalid token)"
+            "description": "Unauthorized (invalid token)",
+            "content": {}
           },
           "404": {
-            "description": "Not found"
+            "description": "Not found",
+            "content": {}
           },
           "500": {
-            "description": "Server error"
+            "description": "Server error",
+            "content": {}
           }
         }
       }
@@ -395,13 +406,16 @@
             }
           },
           "401": {
-            "description": "Unauthorized (invalid token)"
+            "description": "Unauthorized (invalid token)",
+            "content": {}
           },
           "404": {
-            "description": "Not found"
+            "description": "Not found",
+            "content": {}
           },
           "500": {
-            "description": "Server error"
+            "description": "Server error",
+            "content": {}
           }
         }
       }
@@ -440,26 +454,29 @@
             }
           },
           "401": {
-            "description": "Unauthorized (invalid token)"
+            "description": "Unauthorized (invalid token)",
+            "content": {}
           },
           "404": {
-            "description": "Not found"
+            "description": "Not found",
+            "content": {}
           },
           "500": {
-            "description": "Server error"
+            "description": "Server error",
+            "content": {}
           }
         }
       }
       
     },
-    "/api/exercises/filter/{bodyPart}": {
+    "/api/exercises/filter/{category}": {
       "get": {
         "tags": ["Exercises"],
         "summary": "Get categories exercises",
         "parameters": [
           {
             "in": "query",
-            "name": "bodyPart",
+            "name": "category",
             "schema": {
               "type": "string",
               "enum": [
@@ -492,13 +509,16 @@
             }
           },
           "401": {
-            "description": "Unauthorized (invalid token)"
+            "description": "Unauthorized (invalid token)",
+            "content": {}
           },
           "404": {
-            "description": "Not found"
+            "description": "Not found",
+            "content": {}
           },
           "500": {
-            "description": "Server error"
+            "description": "Server error",
+            "content": {}
           }
         }
       }
@@ -522,13 +542,16 @@
             }
           },
           "401": {
-            "description": "Unauthorized (invalid token)"
+            "description": "Unauthorized (invalid token)",
+            "content": {}
           },
           "404": {
-            "description": "Not found"
+            "description": "Not found",
+            "content": {}
           },
           "500": {
-            "description": "Server error"
+            "description": "Server error",
+            "content": {}
           }
         }
       }      
@@ -562,10 +585,12 @@
             }
           },
           "400": {
-            "description": "Bad request (invalid request body)"
+            "description": "Bad request (invalid request body)",
+            "content": {}
           },        
           "500": {
-            "description": "Server error"
+            "description": "Server error",
+            "content": {}
           }
         }
       }
@@ -599,7 +624,8 @@
             "content": {}
           },
           "500": {
-            "description": "Server error"
+            "description": "Server error",
+            "content": {}
           }
         }
       }
@@ -633,10 +659,12 @@
             }
           },
           "400": {
-            "description": "Bad request (invalid request body)"
+            "description": "Bad request (invalid request body)",
+            "content": {}
           },        
           "500": {
-            "description": "Server error"
+            "description": "Server error",
+            "content": {}
           }
         }
       }
@@ -670,7 +698,8 @@
             "content": {}
           },
           "500": {
-            "description": "Server error"
+            "description": "Server error",
+            "content": {}
           }
         }
       }
@@ -702,10 +731,10 @@
       },
       "SignupResponse": {
         "type": "object",
-        "properties": {          
+        "properties": {
           "user": {
             "type": "object",
-            "properties": {
+            "properties": {              
               "name": {
                 "type": "string",
                 "description": "User's name",
@@ -715,15 +744,63 @@
                 "type": "string",
                 "description": "User's email",
                 "example": "powerpulse@goit.com"
-              }              
+              },
+              "blood": {
+                "type": "number",
+                "description": "User's blood type",
+                "enum": ["1", "2", "3", "4"],
+                "example": 1
+              },
+              "sex": {
+                "type": "string",
+                "description": "User's gender",
+                "enum": ["male", "female"],
+                "example": "male"
+              },              
+              "height": {
+                "type": "number",
+                "description": "User's height",
+                "example": 0
+              },
+              "currentWeight": {
+                "type": "number",
+                "description": "User's current weight",
+                "example": 0
+              },
+              "desiredWeight": {
+                "type": "number",
+                "description": "User's desired weight",
+                "example": 0
+              },
+              "levelActivity": {
+                "type": "number",
+                "description": "User's level activity",
+                "enum": ["1", "2", "3", "4", "5"],
+                "example": 1
+              },
+              "avatarURL": {
+                "type": "string",
+                "description": "User's avatar URL",
+                "example": "//www.gravatar.com/avatar/2539b2169b228256128de51b7960d32c"
+              },
+              "birthday": {
+                "type": "string",
+                "description": "User's birthday (mm/dd/yyyy)",
+                "example": "01/20/2001"
+              },
+              "createdAt": {
+                "type": "string",
+                "description": "User's create date",
+                "example": "2024-01-22T18:43:55.351Z"
+              }
             }
           },
           "token": {
             "type": "string",
             "description": "JWT token for authentication",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YWFmYWRhMmU1MjJiMzhhNWYwNTAyNyIsImlhdCI6MTcwNTcwNDE1NCwiZXhwIjoxNzA4Mjk2MTU0fQ.cK5qQO3gknGhFx0EXtrko7GVY0304uOqjsOH2WTOOoM"
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YWFmYWRhMmU1MjJiMzhhNWYwNTAyNyIsImlhdCI6MTcwNTcxNDE5NCwiZXhwIjoxNzA4MzA2MTk0fQ.8zpaoGrvQtustURtEStObpcAzaW_T9EH0HfEVpc_ql8"
           }
-        }     
+        }    
       },
       "SigninRequest": {
         "type": "object",
@@ -795,6 +872,11 @@
                 "description": "User's avatar URL",
                 "example": "//www.gravatar.com/avatar/2539b2169b228256128de51b7960d32c"
               },
+              "birthday": {
+                "type": "string",
+                "description": "User's birthday (mm/dd/yyyy)",
+                "example": "01/20/2001"
+              },
               "createdAt": {
                 "type": "string",
                 "description": "User's create date",
@@ -802,12 +884,95 @@
               }
             }
           },
+          "bmr": {
+            "type": "number",
+            "description": "User's bmr",
+            "example": 2141
+          },
           "token": {
             "type": "string",
             "description": "JWT token for authentication",
             "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YWFmYWRhMmU1MjJiMzhhNWYwNTAyNyIsImlhdCI6MTcwNTcxNDE5NCwiZXhwIjoxNzA4MzA2MTk0fQ.8zpaoGrvQtustURtEStObpcAzaW_T9EH0HfEVpc_ql8"
           }
         }
+      },
+      "CurrentResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {              
+              "name": {
+                "type": "string",
+                "description": "User's name",
+                "example": "Power Pulse"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "example": "powerpulse@goit.com"
+              },
+              "blood": {
+                "type": "number",
+                "description": "User's blood type",
+                "enum": ["1", "2", "3", "4"],
+                "example": 1
+              },
+              "sex": {
+                "type": "string",
+                "description": "User's gender",
+                "enum": ["male", "female"],
+                "example": "male"
+              },              
+              "height": {
+                "type": "number",
+                "description": "User's height",
+                "example": 0
+              },
+              "currentWeight": {
+                "type": "number",
+                "description": "User's current weight",
+                "example": 0
+              },
+              "desiredWeight": {
+                "type": "number",
+                "description": "User's desired weight",
+                "example": 0
+              },
+              "levelActivity": {
+                "type": "number",
+                "description": "User's level activity",
+                "enum": ["1", "2", "3", "4", "5"],
+                "example": 1
+              },
+              "avatarURL": {
+                "type": "string",
+                "description": "User's avatar URL",
+                "example": "//www.gravatar.com/avatar/2539b2169b228256128de51b7960d32c"
+              },
+              "birthday": {
+                "type": "string",
+                "description": "User's birthday (mm/dd/yyyy)",
+                "example": "01/20/2001"
+              },
+              "createdAt": {
+                "type": "string",
+                "description": "User's create date",
+                "example": "2024-01-22T18:43:55.351Z"
+              }
+            }
+          },
+          "bmr": {
+            "type": "number",
+            "description": "User's bmr",
+            "example": 2141
+          },
+          "token": {
+            "type": "string",
+            "description": "JWT token for authentication",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YWFmYWRhMmU1MjJiMzhhNWYwNTAyNyIsImlhdCI6MTcwNTcxNDE5NCwiZXhwIjoxNzA4MzA2MTk0fQ.8zpaoGrvQtustURtEStObpcAzaW_T9EH0HfEVpc_ql8"
+          }
+        }    
       },
       "ParamsRequest": {
         "type": "object",
@@ -932,6 +1097,31 @@
           }
         }
       },
+      "AvatarRequest": {
+        "type": "object",
+        "properties": {          
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "description": "User avatar"
+          }
+        }
+      },
+      "AvatarResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "avatarURL": {
+                "type": "string",
+                "description": "User's avatar url",
+                "example": "http://res.cloudinary.com/dt2gqhsoc/image/upload/v1705244983/65a2af4959e67bb6e4a0fc83.jpg"
+              }
+            }
+          }
+        }       
+      },
       "CategoriesResponse": {
         "type": "object",
         "properties": {
@@ -1017,32 +1207,7 @@
           }
         }  
       },
-      "AvatarRequest": {
-        "type": "object",
-        "required": ["avatarURL"],
-        "properties": {          
-          "avatarURL": {
-            "type": "string",
-            "description": "User's avatar URL",
-            "example": "https://ftp.goit.study/img/power-pulse/filters/back_wzzphw.jpg"
-          }
-        }
-      },
-      "AvatarResponse": {        
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "User name",
-            "example":"Power Pulse"
-          },
-          "avatarURL": {
-            "type": "string",
-            "description": "User avatar",
-            "example" : "https://ftp.goit.study/img/power-pulse/filters/back_wzzphw.jpg"
-          }
-        }   
-      },
+      
       "ExercisesResponse":{
         "type": "array",
             "items": {
