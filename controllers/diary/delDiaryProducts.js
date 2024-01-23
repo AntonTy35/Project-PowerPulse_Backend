@@ -3,8 +3,6 @@ const { Diary } = require("../../models/diaryModel");
 const { HttpError } = require("../../helpers");
 
 const delDiaryProducts = async (req, res) => {
-  const { productId, date, amount, calories } = req.body;
-
   const { id: owner } = req.user;
   const { id } = req.params;
 
