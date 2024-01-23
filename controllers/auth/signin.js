@@ -42,7 +42,8 @@ const signin = async (req, res) => {
       desiredWeight: user.desiredWeight,
       levelActivity: user.levelActivity,
       avatarURL: user.avatarURL,
-      birthday: user.birthday,     
+      birthday: user.birthday,
+      bmr: user.bmr,
     },
     token,
   });
