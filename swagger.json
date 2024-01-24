@@ -1,11 +1,11 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "1.0.0",
+    "version": "1.0.7",
     "title": "PowerPulse API",
-    "description": "API documentation for Power Pulse Server",
+    "description": "API documentation for PowerPulse server",
     "license": {
-      "name": "PowerPulse by Project Group 09",
+      "name": "PowerPulse by Project_Group-09",
       "url": "https://github.com/NikNas1405/PowerPulse"
     }
   },
@@ -532,7 +532,7 @@
         "security": [{ "Bearer": [] }],        
         "responses": {
           "201": {
-            "description": "Successful creation",
+            "description": "Successful",
             "content": {
               "application/json": {
                 "schema": {
@@ -703,7 +703,30 @@
           }
         }
       }
-    }    
+    },
+    "/api/statistics": {
+      "get": {
+        "tags": ["Statistics"],
+        "summary": "Get statistics",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatisticsResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      }
+    }
   },
 
   "components": {    
@@ -1206,8 +1229,7 @@
             }
           }
         }  
-      },
-      
+      },      
       "ExercisesResponse":{
         "type": "array",
             "items": {
@@ -1752,6 +1774,41 @@
               }
             }
           }
+        }
+      },
+      "StatisticsResponse": {        
+        "type": "object",
+        "properties": {
+          "numberRegistered": {
+            "type": "number",
+            "description": "The total number of users registered in the application",
+            "example": 84
+          },
+          "numberExercises": {
+            "type": "number",
+            "description": "The total number of video tutorials in the application",
+            "example": 1324
+          },
+          "allTotalAmount": {
+            "type": "number",
+            "description": "The total amount eaten",
+            "example": 22523
+          },
+          "allTotalCalories": {
+            "type": "number",
+            "description": "The total calories received",
+            "example": 49214
+          },
+          "allTotalTimeExercises": {
+            "type": "number",
+            "description": "The total number of hours spent by registered users in the application for training",
+            "example": 1902
+          },
+          "allTotalCaloriesExercises": {
+            "type": "number",
+            "description": "The total calories burned by all registered users in the application",
+            "example": 9350
+          }            
         }
       }
     },
