@@ -116,7 +116,7 @@ const createStatistics = async (req, res, next) => {
     allTotalCaloriesExercises,
   };
   console.log("10-10", { finalResult });
-  res.status(200).json({ finalResult });
+  res.status(200).json(finalResult);
 };
 
 module.exports = {
